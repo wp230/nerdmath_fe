@@ -83,7 +83,7 @@ export default function DiagnosticsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 헤더 */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 font-DungGeunMo">
             🧮 수학 진단 테스트
           </h1>
           <div className="flex justify-center space-x-2">

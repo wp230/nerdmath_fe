@@ -6,7 +6,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 히어로 섹션 */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6 font-DungGeunMo">
             🧮 수학 진단 테스트
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
