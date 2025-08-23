@@ -80,13 +80,13 @@ export default function DiagnosticsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 ">
         {/* 헤더 */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 font-DungGeunMo">
-            🧮 수학 진단 테스트
+            수학 진단 테스트
           </h1>
-          <div className="flex justify-center space-x-2">
+          <div className="flex justify-center pt-8 space-x-2">
             <div className={`w-3 h-3 rounded-full ${currentStep === 'eligibility' ? 'bg-blue-600' : 'bg-gray-300'}`} />
             <div className={`w-3 h-3 rounded-full ${currentStep === 'setup' ? 'bg-blue-600' : 'bg-gray-300'}`} />
             <div className={`w-3 h-3 rounded-full ${currentStep === 'test' ? 'bg-blue-600' : 'bg-gray-300'}`} />
