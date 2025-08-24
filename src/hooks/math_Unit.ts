@@ -5,14 +5,14 @@ export const UNIT_DATA = {
     title: '수와 연산',
     description:
       '자연수부터 실수까지, 수의 체계와 연산을 체계적으로 학습합니다.',
-    linkPath: '/math/01-numbers',
+    linkPath: '/math/unit_01',
     backgroundColor: 'rgb(0, 176, 255)',
   },
   unit_02: {
     unitId: 'unit_02',
     title: '문자와 식',
     description: '문자를 사용한 식과 방정식, 부등식을 체계적으로 학습합니다.',
-    linkPath: '/math/02-algebra',
+    linkPath: '/math/unit_02',
     backgroundColor: 'rgb(147, 51, 234)',
   },
   unit_03: {
@@ -20,21 +20,21 @@ export const UNIT_DATA = {
     title: '함수',
     description:
       '함수의 개념과 그래프, 다양한 함수의 성질을 체계적으로 학습합니다.',
-    linkPath: '/math/03-functions',
+    linkPath: '/math/unit_03',
     backgroundColor: 'rgb(251, 191, 36)',
   },
   unit_04: {
     unitId: 'unit_04',
     title: '확률과 통계',
     description: '경우의 수, 확률, 통계적 분석을 체계적으로 학습합니다.',
-    linkPath: '/math/04-statistics',
+    linkPath: '/math/unit_04',
     backgroundColor: 'rgb(59, 130, 246)',
   },
   unit_05: {
     unitId: 'unit_05',
     title: '기하',
     description: '평면도형과 입체도형의 성질과 관계를 체계적으로 학습합니다.',
-    linkPath: '/math/05-geometry',
+    linkPath: '/math/unit_05',
     backgroundColor: 'rgb(34, 197, 94)',
   },
 };

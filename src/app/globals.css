@@ -1,6 +1,8 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'katex/dist/katex.min.css';
 
-html, body {
+html,
+body {
   background: transparent;
   margin: 0;
   padding: 0;
@@ -8,9 +10,10 @@ html, body {
 
 @font-face {
   font-family: 'DungGeunMo';
-  src: url('/fonts/DungGeunMo.woff2') format('woff2'),
-       url('/fonts/DungGeunMo.woff') format('woff'),
-       url('/fonts/DungGeunMo.eot') format('embedded-opentype');
+  src:
+    url('/fonts/DungGeunMo.woff2') format('woff2'),
+    url('/fonts/DungGeunMo.woff') format('woff'),
+    url('/fonts/DungGeunMo.eot') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -55,7 +58,8 @@ body {
 
 /* 수학 배경 애니메이션 */
 @keyframes float-math {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(45deg);
   }
   50% {
@@ -64,7 +68,8 @@ body {
 }
 
 @keyframes float-math-delayed {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -73,7 +78,8 @@ body {
 }
 
 @keyframes float-math-slow {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(12deg);
   }
   50% {
