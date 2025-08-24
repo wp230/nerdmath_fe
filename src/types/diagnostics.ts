@@ -56,7 +56,7 @@ export interface DiagnosticSubmitRequest {
 export interface DiagnosticSubmitResponse {
   answerId: string;
   isCorrect: boolean | null;
-  nextProblemId: string;
+  nextProblemId: string | null; // 마지막 문제일 때 null 허용
   answeredCount: number;
   remainingCount: number;
 }

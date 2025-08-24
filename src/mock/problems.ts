@@ -1,10 +1,10 @@
 import { Problem } from '@/types/diagnostics';
 
 export const mockProblemsData: Record<string, Problem> = {
-  // 1학년 문제들 (7개)
+  // 첫 번째 문제 (1-2 API 응답의 firstProblemId)
   '64fa0p111111111111111111': {
     problemId: '64fa0p111111111111111111',
-    unitId: 'unit_000',
+    unitId: 'unit_001',
     grade: 1,
     chapter: 1,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
@@ -25,10 +25,11 @@ export const mockProblemsData: Record<string, Problem> = {
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
+
+  // 두 번째 문제 (1-4 API 응답의 nextProblemId)
   '64fa0p222222222222222222': {
     problemId: '64fa0p222222222222222222',
-    unitId: 'unit_000',
+    unitId: 'unit_001',
     grade: 1,
     chapter: 1,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
@@ -49,10 +50,11 @@ export const mockProblemsData: Record<string, Problem> = {
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
+
+  // 세 번째 문제
   '64fa0p333333333333333333': {
     problemId: '64fa0p333333333333333333',
-    unitId: 'unit_000',
+    unitId: 'unit_001',
     grade: 1,
     chapter: 2,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
@@ -73,12 +75,13 @@ export const mockProblemsData: Record<string, Problem> = {
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
+
+  // 네 번째 문제
   '64fa0p444444444444444444': {
     problemId: '64fa0p444444444444444444',
-    unitId: 'unit_000',
+    unitId: 'unit_001',
     grade: 1,
-    chapter: 3,
+    chapter: 2,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
     cognitiveType: '이해',
     level: '하',
@@ -97,17 +100,18 @@ export const mockProblemsData: Record<string, Problem> = {
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
+
+  // 다섯 번째 문제
   '64fa0p555555555555555555': {
     problemId: '64fa0p555555555555555555',
-    unitId: 'unit_000',
+    unitId: 'unit_001',
     grade: 1,
-    chapter: 4,
+    chapter: 3,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '응용',
+    cognitiveType: '적용',
     level: '중',
     type: '객관식',
-    tags: ['측정', '기초'],
+    tags: ['측정', '길이'],
     content: {
       stem: { text: '연필의 길이는 몇 cm인가요?' },
       choices: [
@@ -121,188 +125,70 @@ export const mockProblemsData: Record<string, Problem> = {
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
+
+  // 여섯 번째 문제
   '64fa0p666666666666666666': {
     problemId: '64fa0p666666666666666666',
-    unitId: 'unit_000',
+    unitId: 'unit_001',
     grade: 1,
-    chapter: 5,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '이해',
-    level: '하',
-    type: '객관식',
-    tags: ['패턴', '기초'],
-    content: {
-      stem: { text: '다음 패턴에서 빈칸에 들어갈 수는?' },
-      choices: [
-        { key: '①', text: '12' },
-        { key: '②', text: '14' },
-        { key: '③', text: '16' },
-        { key: '④', text: '18' }
-      ]
-    },
-    imageUrl: '/images/problems/pattern_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0p777777777777777777': {
-    problemId: '64fa0p777777777777777777',
-    unitId: 'unit_000',
-    grade: 1,
-    chapter: 6,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '적용',
-    level: '중',
-    type: '객관식',
-    tags: ['문제해결', '기초'],
-    content: {
-      stem: { text: '사과 3개와 귤 2개를 합하면 몇 개인가요?' },
-      choices: [
-        { key: '①', text: '4개' },
-        { key: '②', text: '5개' },
-        { key: '③', text: '6개' },
-        { key: '④', text: '7개' }
-      ]
-    },
-    imageUrl: '/images/problems/word_problem_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  // 2학년 문제들 (7개)
-  '64fa0p888888888888888888': {
-    problemId: '64fa0p888888888888888888',
-    unitId: '64unit008888888888888888',
-    grade: 2,
-    chapter: 1,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '이해',
-    level: '중',
-    type: '객관식',
-    tags: ['곱셈', '기초'],
-    content: {
-      stem: { text: '4 × 5 = ?' },
-      choices: [
-        { key: '①', text: '18' },
-        { key: '②', text: '20' },
-        { key: '③', text: '22' },
-        { key: '④', text: '24' }
-      ]
-    },
-    imageUrl: '/images/problems/multiplication_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0p999999999999999999': {
-    problemId: '64fa0p999999999999999999',
-    unitId: '64unit009999999999999999',
-    grade: 2,
-    chapter: 2,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '이해',
-    level: '중',
-    type: '객관식',
-    tags: ['나눗셈', '기초'],
-    content: {
-      stem: { text: '15 ÷ 3 = ?' },
-      choices: [
-        { key: '①', text: '3' },
-        { key: '②', text: '4' },
-        { key: '③', text: '5' },
-        { key: '④', text: '6' }
-      ]
-    },
-    imageUrl: '/images/problems/division_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0paaaaaaaaaaaaaaaa': {
-    problemId: '64fa0paaaaaaaaaaaaaaaa',
-    unitId: '64unit00aaaaaaaaaaaaaaaa',
-    grade: 2,
     chapter: 3,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '적용',
-    level: '중',
-    type: '객관식',
-    tags: ['도형', '면적'],
-    content: {
-      stem: { text: '정사각형의 한 변의 길이가 6cm일 때, 넓이는?' },
-      choices: [
-        { key: '①', text: '24cm²' },
-        { key: '②', text: '30cm²' },
-        { key: '③', text: '36cm²' },
-        { key: '④', text: '42cm²' }
-      ]
-    },
-    imageUrl: '/images/problems/square_area_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0pbbbbbbbbbbbbbbbb': {
-    problemId: '64fa0pbbbbbbbbbbbbbbbb',
-    unitId: '64unit00bbbbbbbbbbbbbbbb',
-    grade: 2,
-    chapter: 4,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
     cognitiveType: '이해',
     level: '하',
     type: '객관식',
     tags: ['시간', '기초'],
     content: {
-      stem: { text: '1시간 30분은 몇 분인가요?' },
+      stem: { text: '1시간은 몇 분인가요?' },
       choices: [
-        { key: '①', text: '60분' },
-        { key: '②', text: '80분' },
-        { key: '③', text: '90분' },
-        { key: '④', text: '120분' }
+        { key: '①', text: '30분' },
+        { key: '②', text: '45분' },
+        { key: '③', text: '60분' },
+        { key: '④', text: '90분' }
       ]
     },
     imageUrl: '/images/problems/time_001.png',
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
-  '64fa0pcccccccccccccccc': {
-    problemId: '64fa0pcccccccccccccccc',
-    unitId: '64unit00cccccccccccccccc',
-    grade: 2,
-    chapter: 5,
+
+  // 일곱 번째 문제
+  '64fa0p777777777777777777': {
+    problemId: '64fa0p777777777777777777',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 4,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '응용',
+    cognitiveType: '적용',
     level: '중',
     type: '객관식',
-    tags: ['문제해결', '곱셈'],
+    tags: ['돈', '기초'],
     content: {
-      stem: { text: '한 상자에 8개의 공이 들어있다. 5상자에는 몇 개의 공이 들어있나요?' },
+      stem: { text: '100원짜리 동전 3개와 50원짜리 동전 2개는 모두 몇 원인가요?' },
       choices: [
-        { key: '①', text: '35개' },
-        { key: '②', text: '38개' },
-        { key: '③', text: '40개' },
-        { key: '④', text: '45개' }
+        { key: '①', text: '300원' },
+        { key: '②', text: '350원' },
+        { key: '③', text: '400원' },
+        { key: '④', text: '450원' }
       ]
     },
-    imageUrl: '/images/problems/word_problem_002.png',
+    imageUrl: '/images/problems/money_001.png',
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
-  '64fa0pdddddddddddddddd': {
-    problemId: '64fa0pdddddddddddddddd',
-    unitId: '64unit00dddddddddddddddd',
-    grade: 2,
-    chapter: 6,
+
+  // 여덟 번째 문제
+  '64fa0p888888888888888888': {
+    problemId: '64fa0p888888888888888888',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 4,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
     cognitiveType: '이해',
     level: '하',
     type: '객관식',
-    tags: ['수', '패턴'],
+    tags: ['패턴', '기초'],
     content: {
-      stem: { text: '2, 4, 6, 8, ? 다음에 올 수는?' },
+      stem: { text: '다음 패턴에서 빈칸에 들어갈 수는 무엇인가요? 2, 4, 6, 8, ?' },
       choices: [
         { key: '①', text: '9' },
         { key: '②', text: '10' },
@@ -310,176 +196,307 @@ export const mockProblemsData: Record<string, Problem> = {
         { key: '④', text: '12' }
       ]
     },
-    imageUrl: '/images/problems/pattern_002.png',
+    imageUrl: '/images/problems/pattern_001.png',
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
-  '64fa0peeeeeeeeeeeeeeee': {
-    problemId: '64fa0peeeeeeeeeeeeeeee',
-    unitId: '64unit00eeeeeeeeeeeeeeee',
-    grade: 2,
-    chapter: 7,
+
+  // 아홉 번째 문제
+  '64fa0p999999999999999999': {
+    problemId: '64fa0p999999999999999999',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 5,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
     cognitiveType: '적용',
     level: '중',
     type: '객관식',
-    tags: ['도형', '둘레'],
+    tags: ['분류', '기초'],
     content: {
-      stem: { text: '가로 5cm, 세로 3cm인 직사각형의 둘레는?' },
+      stem: { text: '다음 중 동물이 아닌 것은 무엇인가요?' },
       choices: [
-        { key: '①', text: '12cm' },
-        { key: '②', text: '14cm' },
-        { key: '③', text: '16cm' },
-        { key: '④', text: '18cm' }
+        { key: '①', text: '강아지' },
+        { key: '②', text: '고양이' },
+        { key: '③', text: '나무' },
+        { key: '④', text: '토끼' }
       ]
     },
-    imageUrl: '/images/problems/rectangle_perimeter_001.png',
+    imageUrl: '/images/problems/classification_001.png',
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
-  // 3학년 문제들 (6개)
-  '64fa0pffffffffffffffff': {
-    problemId: '64fa0pffffffffffffffff',
-    unitId: '64unit00ffffffffffffffff',
-    grade: 3,
-    chapter: 1,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '이해',
-    level: '중',
-    type: '객관식',
-    tags: ['분수', '기초'],
-    content: {
-      stem: { text: '1/2 + 1/4 = ?' },
-      choices: [
-        { key: '①', text: '1/6' },
-        { key: '②', text: '2/6' },
-        { key: '③', text: '3/4' },
-        { key: '④', text: '2/4' }
-      ]
-    },
-    imageUrl: '/images/problems/fraction_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0pgggggggggggggggg': {
-    problemId: '64fa0pgggggggggggggggg',
-    unitId: '64unit00gggggggggggggggg',
-    grade: 3,
-    chapter: 2,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '이해',
-    level: '중',
-    type: '객관식',
-    tags: ['소수', '기초'],
-    content: {
-      stem: { text: '0.5 + 0.3 = ?' },
-      choices: [
-        { key: '①', text: '0.6' },
-        { key: '②', text: '0.7' },
-        { key: '③', text: '0.8' },
-        { key: '④', text: '0.9' }
-      ]
-    },
-    imageUrl: '/images/problems/decimal_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0phhhhhhhhhhhhhhhh': {
-    problemId: '64fa0phhhhhhhhhhhhhhhh',
-    unitId: '64unit00hhhhhhhhhhhhhhhh',
-    grade: 3,
-    chapter: 3,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '응용',
-    level: '상',
-    type: '객관식',
-    tags: ['도형', '부피'],
-    content: {
-      stem: { text: '가로 3cm, 세로 2cm, 높이 4cm인 직육면체의 부피는?' },
-      choices: [
-        { key: '①', text: '18cm³' },
-        { key: '②', text: '20cm³' },
-        { key: '③', text: '24cm³' },
-        { key: '④', text: '28cm³' }
-      ]
-    },
-    imageUrl: '/images/problems/volume_001.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0piiiiiiiiiiiiiiii': {
-    problemId: '64fa0piiiiiiiiiiiiiiii',
-    unitId: '64unit00iiiiiiiiiiiiiiii',
-    grade: 3,
-    chapter: 4,
-    context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '적용',
-    level: '중',
-    type: '객관식',
-    tags: ['문제해결', '분수'],
-    content: {
-      stem: { text: '한 봉지에 1/3kg의 과자가 들어있다. 3봉지에는 몇 kg의 과자가 들어있나요?' },
-      choices: [
-        { key: '①', text: '1/9kg' },
-        { key: '②', text: '1/3kg' },
-        { key: '③', text: '2/3kg' },
-        { key: '④', text: '1kg' }
-      ]
-    },
-    imageUrl: '/images/problems/word_problem_003.png',
-    createdAt: '2025-07-14T10:25:00Z',
-    updatedAt: '2025-07-14T10:25:00Z'
-  },
-  
-  '64fa0pjjjjjjjjjjjjjjjj': {
-    problemId: '64fa0pjjjjjjjjjjjjjjjj',
-    unitId: '64unit00jjjjjjjjjjjjjjjj',
-    grade: 3,
+
+  // 열 번째 문제
+  '64fa0p101010101010101010': {
+    problemId: '64fa0p101010101010101010',
+    unitId: 'unit_001',
+    grade: 1,
     chapter: 5,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
     cognitiveType: '이해',
     level: '하',
     type: '객관식',
-    tags: ['수', '규칙'],
+    tags: ['비교', '기초'],
     content: {
-      stem: { text: '3, 6, 9, 12, ? 다음에 올 수는?' },
+      stem: { text: '다음 중 가장 큰 수는 무엇인가요?' },
       choices: [
-        { key: '①', text: '14' },
-        { key: '②', text: '15' },
-        { key: '③', text: '16' },
-        { key: '④', text: '18' }
+        { key: '①', text: '15' },
+        { key: '②', text: '25' },
+        { key: '③', text: '35' },
+        { key: '④', text: '45' }
       ]
     },
-    imageUrl: '/images/problems/pattern_003.png',
+    imageUrl: '/images/problems/comparison_001.png',
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   },
-  
-  '64fa0pkkkkkkkkkkkkkkkk': {
-    problemId: '64fa0pkkkkkkkkkkkkkkkk',
-    unitId: '64unit00kkkkkkkkkkkkkkkk',
-    grade: 3,
+
+  // 열한 번째 문제
+  '64fa0p111111111111111112': {
+    problemId: '64fa0p111111111111111112',
+    unitId: 'unit_001',
+    grade: 1,
     chapter: 6,
     context: { source: '교과서', for: ['diagnostic', 'practice'] },
-    cognitiveType: '응용',
-    level: '상',
+    cognitiveType: '적용',
+    level: '중',
     type: '객관식',
-    tags: ['도형', '대칭'],
+    tags: ['그래프', '기초'],
     content: {
-      stem: { text: '다음 도형 중 대칭축이 가장 많은 것은?' },
+      stem: { text: '막대그래프에서 가장 높은 막대는 무엇을 나타내나요?' },
       choices: [
-        { key: '①', text: '정삼각형' },
-        { key: '②', text: '정사각형' },
-        { key: '③', text: '정오각형' },
-        { key: '④', text: '정육각형' }
+        { key: '①', text: '가장 적은 수' },
+        { key: '②', text: '가장 많은 수' },
+        { key: '③', text: '평균' },
+        { key: '④', text: '중간값' }
       ]
     },
-    imageUrl: '/images/problems/symmetry_001.png',
+    imageUrl: '/images/problems/graph_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열두 번째 문제
+  '64fa0p111111111111111113': {
+    problemId: '64fa0p111111111111111113',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 6,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '이해',
+    level: '하',
+    type: '객관식',
+    tags: ['확률', '기초'],
+    content: {
+      stem: { text: '주사위를 던졌을 때 6이 나올 확률은?' },
+      choices: [
+        { key: '①', text: '1/2' },
+        { key: '②', text: '1/3' },
+        { key: '③', text: '1/6' },
+        { key: '④', text: '1/12' }
+      ]
+    },
+    imageUrl: '/images/problems/probability_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열세 번째 문제
+  '64fa0p111111111111111114': {
+    problemId: '64fa0p111111111111111114',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 7,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '적용',
+    level: '중',
+    type: '객관식',
+    tags: ['공간', '기초'],
+    content: {
+      stem: { text: '왼쪽에서 오른쪽으로 가는 방향은?' },
+      choices: [
+        { key: '①', text: '동쪽' },
+        { key: '②', text: '서쪽' },
+        { key: '③', text: '남쪽' },
+        { key: '④', text: '북쪽' }
+      ]
+    },
+    imageUrl: '/images/problems/space_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열네 번째 문제
+  '64fa0p111111111111111115': {
+    problemId: '64fa0p111111111111111115',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 7,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '이해',
+    level: '하',
+    type: '객관식',
+    tags: ['규칙', '기초'],
+    content: {
+      stem: { text: '다음 규칙에 따라 빈칸을 채우세요: 1, 3, 5, 7, ?' },
+      choices: [
+        { key: '①', text: '8' },
+        { key: '②', text: '9' },
+        { key: '③', text: '10' },
+        { key: '④', text: '11' }
+      ]
+    },
+    imageUrl: '/images/problems/rule_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열다섯 번째 문제
+  '64fa0p111111111111111116': {
+    problemId: '64fa0p111111111111111116',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 8,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '적용',
+    level: '중',
+    type: '객관식',
+    tags: ['문제해결', '기초'],
+    content: {
+      stem: { text: '사과 5개를 2명이 똑같이 나누면 몇 개씩 받나요?' },
+      choices: [
+        { key: '①', text: '2개' },
+        { key: '②', text: '2.5개' },
+        { key: '③', text: '3개' },
+        { key: '④', text: '나눌 수 없다' }
+      ]
+    },
+    imageUrl: '/images/problems/problemsolving_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열여섯 번째 문제
+  '64fa0p111111111111111117': {
+    problemId: '64fa0p111111111111111117',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 8,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '이해',
+    level: '하',
+    type: '객관식',
+    tags: ['추론', '기초'],
+    content: {
+      stem: { text: '모든 새는 날 수 있다. 펭귄은 새이다. 따라서 펭귄은?' },
+      choices: [
+        { key: '①', text: '날 수 있다' },
+        { key: '②', text: '날 수 없다' },
+        { key: '③', text: '알 수 없다' },
+        { key: '④', text: '가끔 날 수 있다' }
+      ]
+    },
+    imageUrl: '/images/problems/reasoning_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열일곱 번째 문제
+  '64fa0p111111111111111118': {
+    problemId: '64fa0p111111111111111118',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 9,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '적용',
+    level: '중',
+    type: '객관식',
+    tags: ['통계', '기초'],
+    content: {
+      stem: { text: '학급에서 가장 많이 좋아하는 과목을 알아보려면?' },
+      choices: [
+        { key: '①', text: '가장 어려운 과목' },
+        { key: '②', text: '가장 쉬운 과목' },
+        { key: '③', text: '가장 많은 학생이 선택한 과목' },
+        { key: '④', text: '가장 적은 학생이 선택한 과목' }
+      ]
+    },
+    imageUrl: '/images/problems/statistics_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열여덟 번째 문제
+  '64fa0p111111111111111119': {
+    problemId: '64fa0p111111111111111119',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 9,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '이해',
+    level: '하',
+    type: '객관식',
+    tags: ['기하', '기초'],
+    content: {
+      stem: { text: '정사각형의 특징이 아닌 것은?' },
+      choices: [
+        { key: '①', text: '네 변의 길이가 같다' },
+        { key: '②', text: '네 각이 모두 같다' },
+        { key: '③', text: '대각선이 서로 수직이다' },
+        { key: '④', text: '세 각의 합이 180도이다' }
+      ]
+    },
+    imageUrl: '/images/problems/geometry_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 열아홉 번째 문제
+  '64fa0p111111111111111120': {
+    problemId: '64fa0p111111111111111120',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 10,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '적용',
+    level: '중',
+    type: '객관식',
+    tags: ['함수', '기초'],
+    content: {
+      stem: { text: '입력값이 2배가 되면 출력값도 2배가 되는 관계는?' },
+      choices: [
+        { key: '①', text: '덧셈' },
+        { key: '②', text: '뺄셈' },
+        { key: '③', text: '곱셈' },
+        { key: '④', text: '나눗셈' }
+      ]
+    },
+    imageUrl: '/images/problems/function_001.png',
+    createdAt: '2025-07-14T10:25:00Z',
+    updatedAt: '2025-07-14T10:25:00Z'
+  },
+
+  // 스무 번째 문제 (마지막)
+  '64fa0p111111111111111121': {
+    problemId: '64fa0p111111111111111121',
+    unitId: 'unit_001',
+    grade: 1,
+    chapter: 10,
+    context: { source: '교과서', for: ['diagnostic', 'practice'] },
+    cognitiveType: '이해',
+    level: '하',
+    type: '객관식',
+    tags: ['종합', '기초'],
+    content: {
+      stem: { text: '1부터 20까지의 수 중에서 3의 배수는 몇 개인가요?' },
+      choices: [
+        { key: '①', text: '5개' },
+        { key: '②', text: '6개' },
+        { key: '③', text: '7개' },
+        { key: '④', text: '8개' }
+      ]
+    },
+    imageUrl: '/images/problems/comprehensive_001.png',
     createdAt: '2025-07-14T10:25:00Z',
     updatedAt: '2025-07-14T10:25:00Z'
   }

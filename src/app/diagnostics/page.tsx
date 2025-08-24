@@ -1,82 +1,68 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useDiagnostics } from '@/hooks/useDiagnostics';
+import { useState } from 'react';
 import { DiagnosticEligibility } from '@/components/diagnostics/DiagnosticEligibility';
 import { DiagnosticSetup } from '@/components/diagnostics/DiagnosticSetup';
 import { DiagnosticTest } from '@/components/diagnostics/DiagnosticTest';
+import { useDiagnosticsUI } from '@/hooks/useDiagnosticsUI';
+import { useDiagnosticsAPI } from '@/hooks/useDiagnosticsAPI';
 import { DiagnosticStartRequest } from '@/types/diagnostics';
 
 export default function DiagnosticsPage() {
-  const [currentStep, setCurrentStep] = useState<'eligibility' | 'setup' | 'test' | 'complete'>('eligibility');
-  const [userId] = useState(12345); // 임시 사용자 ID
+  // testData를 페이지에서 직접 관리
   const [testData, setTestData] = useState<any>(null);
   
   const {
-    checkEligibility,
-    startDiagnostic,
+    currentStep,
+    userId,
     loading,
     error,
-    resetDiagnostics
-  } = useDiagnostics();
+    handleEligibilityCheck,
+    handleTestStart: uiHandleTestStart,
+    handleBack,
+    handleTestComplete,
+    handleTestTimeout,
+    handleRestart,
+    canGoBack,
+    isEligibilityStep,
+    isSetupStep,
+    isTestStep,
+    isCompleteStep
+  } = useDiagnosticsUI();
 
-  // 진단 자격 확인
-  const handleEligibilityCheck = async () => {
-    try {
-      const eligibility = await checkEligibility(userId);
-      if (eligibility.eligible) {
-        setCurrentStep('setup');
-      } else {
-        // 이미 완료된 경우 처리
-        alert(`진단 테스트를 이미 완료했습니다. ${eligibility.reason}`);
-      }
-    } catch (err) {
-      console.error('자격 확인 실패:', err);
-    }
-  };
+  // API 훅을 직접 사용하여 상태 공유
+  const {
+    currentProblem,
+    submitAnswer,
+    getTestStatus,
+    checkTimeout,
+    isCompleted,
+    startDiagnostic
+  } = useDiagnosticsAPI();
 
-  // 진단 테스트 시작
+  // 진단 테스트 시작 처리 (API 호출 + UI 상태 업데이트)
   const handleTestStart = async (setupData: DiagnosticStartRequest) => {
     try {
+      console.log('🚀 페이지에서 진단 테스트 시작:', setupData);
       const response = await startDiagnostic(userId, setupData);
+      console.log('✅ 진단 테스트 시작 성공:', response);
+      
+      // testData 설정 (API 응답으로)
       setTestData(response);
-      setCurrentStep('test');
+      
+      // UI 상태 업데이트
+      uiHandleTestStart(setupData);
     } catch (err) {
-      console.error('테스트 시작 실패:', err);
+      console.error('❌ 진단 테스트 시작 실패:', err);
     }
-  };
-
-  // 뒤로 가기
-  const handleBack = () => {
-    if (currentStep === 'setup') {
-      setCurrentStep('eligibility');
-    } else if (currentStep === 'test') {
-      setCurrentStep('setup');
-    }
-  };
-
-  // 테스트 완료
-  const handleTestComplete = () => {
-    setCurrentStep('complete');
-  };
-
-  // 테스트 타임아웃
-  const handleTestTimeout = () => {
-    alert('진단 테스트 시간이 만료되었습니다.');
-    setCurrentStep('complete');
   };
 
   // 처음부터 다시 시작
-  const handleRestart = () => {
-    resetDiagnostics();
-    setCurrentStep('eligibility');
-    setTestData(null);
+  const handleRestartClick = () => {
+    console.log('🔄 진단 테스트 재시작');
+    setTestData(null); // testData 초기화
+    handleRestart();
   };
-
-  // 페이지 로드 시 자동으로 자격 확인
-  useEffect(() => {
-    handleEligibilityCheck();
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
@@ -86,16 +72,17 @@ export default function DiagnosticsPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4 font-DungGeunMo">
             수학 진단 테스트
           </h1>
+          {/* 진행 확인 점 */}
           <div className="flex justify-center pt-8 space-x-2">
-            <div className={`w-3 h-3 rounded-full ${currentStep === 'eligibility' ? 'bg-blue-600' : 'bg-gray-300'}`} />
-            <div className={`w-3 h-3 rounded-full ${currentStep === 'setup' ? 'bg-blue-600' : 'bg-gray-300'}`} />
-            <div className={`w-3 h-3 rounded-full ${currentStep === 'test' ? 'bg-blue-600' : 'bg-gray-300'}`} />
-            <div className={`w-3 h-3 rounded-full ${currentStep === 'complete' ? 'bg-blue-600' : 'bg-gray-300'}`} />
+            <div className={`w-3 h-3 rounded-full ${isEligibilityStep ? 'bg-blue-600' : 'bg-gray-300'}`} />
+            <div className={`w-3 h-3 rounded-full ${isSetupStep ? 'bg-blue-600' : 'bg-gray-300'}`} />
+            <div className={`w-3 h-3 rounded-full ${isTestStep ? 'bg-blue-600' : 'bg-gray-300'}`} />
+            <div className={`w-3 h-3 rounded-full ${isCompleteStep ? 'bg-blue-600' : 'bg-gray-300'}`} />
           </div>
         </div>
 
         {/* 뒤로 가기 버튼 */}
-        {(currentStep === 'setup' || currentStep === 'test') && (
+        {canGoBack && (
           <div className="mb-4">
             <button
               onClick={handleBack}
@@ -110,7 +97,7 @@ export default function DiagnosticsPage() {
         )}
 
         {/* 단계별 컴포넌트 */}
-        {currentStep === 'eligibility' && (
+        {isEligibilityStep && (
           <DiagnosticEligibility 
             onCheck={handleEligibilityCheck}
             loading={loading}
@@ -118,7 +105,7 @@ export default function DiagnosticsPage() {
           />
         )}
 
-        {currentStep === 'setup' && (
+        {isSetupStep && (
           <DiagnosticSetup 
             onStart={handleTestStart}
             loading={loading}
@@ -126,16 +113,21 @@ export default function DiagnosticsPage() {
           />
         )}
 
-        {currentStep === 'test' && testData && (
+        {isTestStep && testData && (
           <DiagnosticTest 
             testData={testData}
             userId={userId}
+            currentProblem={currentProblem}
+            submitAnswer={submitAnswer}
+            getTestStatus={getTestStatus}
+            checkTimeout={checkTimeout}
+            isCompleted={isCompleted}
             onComplete={handleTestComplete}
             onTimeout={handleTestTimeout}
           />
         )}
 
-        {currentStep === 'complete' && (
+        {isCompleteStep && (
           <div className="bg-white rounded-lg shadow-lg p-8 text-center">
             <div className="text-6xl mb-4">🎉</div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
@@ -145,7 +137,7 @@ export default function DiagnosticsPage() {
               수고하셨습니다. 진단 결과를 분석하여 맞춤형 학습 계획을 제공하겠습니다.
             </p>
             <button
-              onClick={handleRestart}
+              onClick={handleRestartClick}
               className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
             >
               처음부터 다시 시작
@@ -157,6 +149,17 @@ export default function DiagnosticsPage() {
         {error && (
           <div className="bg-red-50 text-red-700 p-4 rounded-lg text-center mt-4">
             {error}
+          </div>
+        )}
+
+        {/* 디버그 정보 (개발용) */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-8 p-4 bg-gray-100 rounded-lg text-xs text-gray-600">
+            <h3 className="font-bold mb-2">디버그 정보:</h3>
+            <div>현재 단계: {currentStep}</div>
+            <div>테스트 완료: {isCompleted ? '예' : '아니오'}</div>
+            <div>현재 문제: {currentProblem ? '로드됨' : '없음'}</div>
+            <div>테스트 데이터: {testData ? '있음' : '없음'}</div>
           </div>
         )}
       </div>

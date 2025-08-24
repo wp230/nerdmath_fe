@@ -1,34 +1,12 @@
-/**
- * DiagnosticSetup 컴포넌트
- * 
- * 책임: 진단 테스트 설정 정보 수집
- * - 학년 범위 설정
- * - 설정 완료 시 진단 테스트 시작 요청
- * 
- * Props:
- * - onStart: 테스트 시작 함수 (DiagnosticStartRequest 데이터 전달)
- * - loading: API 로딩 상태
- * - error: 에러 메시지
- * 
- * 상태:
- * - selectedGrade: 선택된 학년
- * - isSubmitting: 폼 제출 상태
- */
-
 'use client';
 
 import { useState } from 'react';
-import { DiagnosticStartRequest } from '@/types/diagnostics';
 
-interface DiagnosticSetupProps {
-  onStart: (data: DiagnosticStartRequest) => Promise<void>;
-  loading: boolean;
-  error: string | null;
-}
-
-export const DiagnosticSetup = ({ onStart, loading, error }: DiagnosticSetupProps) => {
+function TestStart() {
   const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleGradeSelect = (grade: number | null) => {
     console.log('🔄 학년 선택 변경:', `${selectedGrade} → ${grade}`);
@@ -38,30 +16,31 @@ export const DiagnosticSetup = ({ onStart, loading, error }: DiagnosticSetupProp
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedGrade) {
+      setError('학년을 선택해주세요.');
       return;
     }
+    setError(null);
     setIsSubmitting(true);
-    
-    // 사용자 입력 데이터 로깅
-    const requestData = { gradeRange: { min: 1, max: selectedGrade } };
-    console.log('🚀 진단 테스트 시작 요청 데이터:', requestData);
-    console.log('📝 선택된 학년:', selectedGrade);
-    console.log('🎯 설정된 학년 범위:', requestData.gradeRange);
-    
-    try {
-      const result = await onStart(requestData);
-      console.log('✅ 진단 테스트 시작 성공:', result);
-    } catch (err) {
-      console.error('❌ 진단 테스트 시작 실패:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
+    // 여기에 제출 로직 추가
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        
+        {/* 헤더 섹션 */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6 shadow-lg">
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            진단 테스트 설정
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            진단테스트를 보는 사용자의 상태를 선택해주세요
+          </p>
+        </div>
 
         {/* 메인 카드 */}
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8">
@@ -250,4 +229,32 @@ export const DiagnosticSetup = ({ onStart, loading, error }: DiagnosticSetupProp
       </div>
     </div>
   );
-};
+}
+
+function TestResult() {
+  return <>
+    <div className="flex justify-center pt-8 space-x-2">
+      <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+        <div className="text-6xl mb-4">🎉</div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          진단 테스트가 완료되었습니다!
+        </h2>
+        <p className="text-gray-600 mb-6">
+          수고하셨습니다. 진단 결과를 분석하여 맞춤형 학습 계획을
+          제공하겠습니다.
+        </p>
+        <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+          처음부터 다시 시작
+        </button>
+      </div>
+    </div>
+  </>;
+}
+
+export default function TestPage() {
+  return (
+    <>
+      <TestStart />
+    </>
+  );
+}

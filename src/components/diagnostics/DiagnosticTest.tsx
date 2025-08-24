@@ -27,49 +27,59 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useDiagnostics } from '@/hooks/useDiagnostics';
 import { DiagnosticStartResponse, DiagnosticSubmitRequest, Problem } from '@/types/diagnostics';
-import { apiClient } from '@/lib/api';
 
 interface DiagnosticTestProps {
   testData: DiagnosticStartResponse;
   userId: number;
+  currentProblem: any; // 부모에서 전달받은 문제 데이터
+  submitAnswer: (testId: string, userId: number, data: DiagnosticSubmitRequest) => Promise<any>;
+  getTestStatus: (testId: string, userId: number) => Promise<any>;
+  checkTimeout: (testId: string, userId: number) => Promise<any>;
+  isCompleted: boolean;
   onComplete: () => void;
   onTimeout: () => void;
 }
 
-export const DiagnosticTest = ({ testData, userId, onComplete, onTimeout }: DiagnosticTestProps) => {
-  const { submitAnswer, getTestStatus, checkTimeout, loading, error: hookError } = useDiagnostics();
-  const [currentProblem, setCurrentProblem] = useState<Problem | null>(null);
+export const DiagnosticTest = ({ 
+  testData, 
+  userId, 
+  currentProblem,
+  submitAnswer,
+  getTestStatus,
+  checkTimeout,
+  isCompleted,
+  onComplete, 
+  onTimeout 
+}: DiagnosticTestProps) => {
   const [userAnswer, setUserAnswer] = useState('');
   const [timeRemaining, setTimeRemaining] = useState(30 * 60); // 30분
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentProblemId, setCurrentProblemId] = useState(testData.firstProblemId);
   const [answeredCount, setAnsweredCount] = useState(0);
   const [remainingCount, setRemainingCount] = useState(testData.totalProblems);
   const [error, setError] = useState<string | null>(null);
+  const [problemStartTime, setProblemStartTime] = useState<number>(Date.now()); // 문제 시작 시간
 
-  // 첫 번째 문제 로드
+  // 디버깅: currentProblem 상태 확인
   useEffect(() => {
-    loadProblem(testData.firstProblemId);
-  }, [testData.firstProblemId]);
+    console.log('🔍 DiagnosticTest - currentProblem 변경됨:', currentProblem);
+  }, [currentProblem]);
 
-  // 문제 로드 함수
-  const loadProblem = async (problemId: string) => {
-    try {
-      console.log('🌐 문제 로드:', problemId);
-      const problem = await apiClient.problems.getProblem(problemId);
-      
-      setCurrentProblem(problem);
-      setCurrentProblemId(problemId);
-      setError(null);
-      
-      console.log('📚 문제 로드 완료:', problem);
-    } catch (err) {
-      console.error('문제 로드 실패:', err);
-      setError('문제를 불러오는데 실패했습니다. 다시 시도해주세요.');
+  // 문제가 변경될 때마다 시작 시간 초기화
+  useEffect(() => {
+    if (currentProblem) {
+      setProblemStartTime(Date.now());
+      setUserAnswer(''); // 답안 초기화
     }
-  };
+  }, [currentProblem?.problemId]);
+
+  // 테스트 완료 체크
+  useEffect(() => {
+    if (isCompleted) {
+      console.log('🎉 테스트 완료 조건 충족!');
+      onComplete();
+    }
+  }, [isCompleted, onComplete]);
 
   // 타이머
   useEffect(() => {
@@ -136,13 +146,18 @@ export const DiagnosticTest = ({ testData, userId, onComplete, onTimeout }: Diag
       console.log('📝 testId:', testData.testId);
       console.log('❓ currentProblem:', currentProblem);
       
+      // durationSeconds 정확히 계산
+      const currentTime = Date.now();
+      const durationSeconds = Math.floor((currentTime - problemStartTime) / 1000);
+      
       const submitData: DiagnosticSubmitRequest = {
         problemId: currentProblem.problemId,
         userAnswer: { value: userAnswer },
-        durationSeconds: 30 * 60 - timeRemaining // 임시로 계산
+        durationSeconds: durationSeconds
       };
       
       console.log('📤 제출할 데이터:', submitData);
+      console.log('⏱️ 문제 풀이 시간:', durationSeconds, '초');
       console.log('🌐 API 호출: submitAnswer()');
 
       const response = await submitAnswer(testData.testId, userId, submitData);
@@ -153,14 +168,13 @@ export const DiagnosticTest = ({ testData, userId, onComplete, onTimeout }: Diag
       setAnsweredCount(response.answeredCount);
       setRemainingCount(response.remainingCount);
       
-      if (response.remainingCount === 0) {
-        console.log('🎉 모든 문제 완료!');
+      // 테스트 완료 체크 (totalProblems와 answeredCount 비교)
+      if (response.answeredCount >= testData.totalProblems) {
+        console.log('🎉 모든 문제 완료! (answeredCount >= totalProblems)');
         onComplete();
       } else if (response.nextProblemId) {
         console.log('🔄 다음 문제로 이동:', response.nextProblemId);
-        // 다음 문제로 이동
-        setUserAnswer('');
-        await loadProblem(response.nextProblemId);
+        // 다음 문제는 훅에서 자동으로 로드됨
       }
     } catch (err) {
       console.error('❌ 답안 제출 실패:', err);
@@ -182,6 +196,17 @@ export const DiagnosticTest = ({ testData, userId, onComplete, onTimeout }: Diag
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">문제를 불러오는 중...</p>
+          
+          {/* 디버깅 정보 */}
+          <div className="mt-4 p-4 bg-gray-100 rounded-lg text-xs text-gray-600 text-left">
+            <h4 className="font-bold mb-2">디버깅 정보:</h4>
+            <div>currentProblem: {currentProblem ? '있음' : '없음'}</div>
+            <div>error: {error || '없음'}</div>
+            {currentProblem && (
+              <div>currentProblem.problemId: {currentProblem.problemId}</div>
+            )}
+          </div>
+          
           {error && (
             <div className="mt-4 bg-red-50 text-red-700 p-3 rounded-lg text-sm">
               {error}
@@ -253,7 +278,7 @@ export const DiagnosticTest = ({ testData, userId, onComplete, onTimeout }: Diag
         {/* 객관식 선택지 */}
         {currentProblem.content.choices && currentProblem.content.choices.length > 0 && (
           <div className="space-y-2">
-            {currentProblem.content.choices.map((choice) => (
+            {currentProblem.content.choices.map((choice: { key: string; text: string }) => (
               <label
                 key={choice.key}
                 className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
@@ -296,17 +321,17 @@ export const DiagnosticTest = ({ testData, userId, onComplete, onTimeout }: Diag
       <form onSubmit={handleSubmit} className="space-y-4">
         <button
           type="submit"
-          disabled={!userAnswer.trim() || isSubmitting || loading}
+          disabled={!userAnswer.trim() || isSubmitting}
           className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
-          {isSubmitting || loading ? '제출 중...' : '답안 제출'}
+          {isSubmitting ? '제출 중...' : '답안 제출'}
         </button>
       </form>
 
       {/* 에러 메시지 */}
-      {(error || hookError) && (
+      {error && (
         <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm mt-4">
-          {error || hookError}
+          {error}
         </div>
       )}
 
@@ -320,6 +345,12 @@ export const DiagnosticTest = ({ testData, userId, onComplete, onTimeout }: Diag
           <span>답변 완료: {answeredCount}문제</span>
           <span>남은 문제: {remainingCount}문제</span>
         </div>
+        {/* 테스트 완료 상태 표시 */}
+        {isCompleted && (
+          <div className="mt-2 p-2 bg-green-50 text-green-700 rounded text-center font-medium">
+            🎉 테스트 완료 조건 충족!
+          </div>
+        )}
       </div>
     </div>
   );

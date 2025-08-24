@@ -143,7 +143,12 @@ export const apiClient = {
     submit: async (testId: string, userId: number, data: DiagnosticSubmitRequest): Promise<DiagnosticSubmitResponse> => {
       if (USE_MOCK_DATA) {
         await simulateApiDelay();
-        return mockDiagnosticsData.submit;
+        // 특정 문제 ID의 응답만 반환
+        const problemResponse = (mockDiagnosticsData.submit as any)[data.problemId];
+        if (!problemResponse) {
+          throw new Error(`문제 ID ${data.problemId}에 대한 응답을 찾을 수 없습니다.`);
+        }
+        return problemResponse;
       }
 
       const requestId = generateId('req_diag_submit');
@@ -230,11 +235,8 @@ export const apiClient = {
         console.log('🎭 모킹 데이터 - 소단원 첫 문제 조회:', unitId);
         await simulateApiDelay();
         
-        // 모킹 데이터 사용
-        const response = mockDiagnosticsData.unitFirstProblem;
-        
-        console.log('🎭 소단원 첫 문제 응답:', response);
-        return response;
+        // 이 API는 더 이상 사용되지 않음 (2-1 API로 대체)
+        throw new Error('이 API는 더 이상 사용되지 않습니다. 2-1 API를 사용하세요.');
       }
 
       const requestId = generateId('req_first_problem');
@@ -244,7 +246,7 @@ export const apiClient = {
         method: 'GET',
         headers: createHeaders({ auth: true, requestId })
       });
- 
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
