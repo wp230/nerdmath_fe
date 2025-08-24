@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   description: '개인 맞춤형 수학 학습을 위한 진단 테스트 시스템',
   keywords: ['수학', '진단', '학습', '교육', '문제풀이'],
   authors: [{ name: 'Math Learning Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({
