@@ -2,14 +2,14 @@
 
 import { useLearningStore } from '../../../stores/learningStore';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, use } from 'react';
 
 export default function LearningPage({
   params,
 }: {
-  params: { unitId: string };
+  params: Promise<{ unitId: string }>;
 }) {
-  const { unitId } = params;
+  const { unitId } = use(params);
   const { selectedUnit } = useLearningStore();
   const router = useRouter();
 
