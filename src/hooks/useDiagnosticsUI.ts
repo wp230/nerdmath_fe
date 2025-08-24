@@ -55,13 +55,6 @@ export function useDiagnosticsUI() {
     setCurrentStep('complete');
   };
 
-  // 처음부터 다시 시작
-  const handleRestart = () => {
-    console.log('🔄 진단 테스트 재시작');
-    setCurrentStep('eligibility');
-    setTestData(null);
-  };
-
   // 페이지 로드 시 자동으로 자격 확인
   useEffect(() => {
     handleEligibilityCheck();
@@ -81,7 +74,6 @@ export function useDiagnosticsUI() {
     handleBack,
     handleTestComplete,
     handleTestTimeout,
-    handleRestart,
     
     // 유틸리티
     canGoBack: currentStep === 'setup' || currentStep === 'test',
