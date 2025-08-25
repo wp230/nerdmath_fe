@@ -50,10 +50,20 @@ apiClient.interceptors.response.use(
 export const checkDiagnosticEligibility = async (
   userId: number
 ): Promise<DiagnosticEligibility> => {
-  const response = await apiClient.get(
-    `/v1/diagnostics/eligibility?userId=${userId}`
+  console.log(
+    '🚀 API 호출 시작: 진단 테스트 자격 확인',
+    `${API_BASE_URL}/v1/diagnostics/eligibility?userId=${userId}`
   );
-  return response.data;
+  try {
+    const response = await apiClient.get(
+      `/v1/diagnostics/eligibility?userId=${userId}`
+    );
+    console.log('✅ API 호출 성공: 진단 테스트 자격 확인', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 진단 테스트 자격 확인 실패:', error);
+    throw error;
+  }
 };
 
 // 진단 테스트 시작
@@ -63,17 +73,26 @@ export const startDiagnosticTest = async (
 ): Promise<DiagnosticStartResponse> => {
   const idempotencyKey = `idem_diag_start_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-  const response = await apiClient.post(
-    `/v1/diagnostics/start?userId=${userId}`,
-    data,
-    {
-      headers: {
-        'Idempotency-Key': idempotencyKey,
-      },
-    }
+  console.log(
+    '🚀 API 호출 시작: 진단 테스트 시작',
+    `${API_BASE_URL}/v1/diagnostics/start?userId=${userId}`
   );
-
-  return response.data;
+  try {
+    const response = await apiClient.post(
+      `/v1/diagnostics/start?userId=${userId}`,
+      data,
+      {
+        headers: {
+          'Idempotency-Key': idempotencyKey,
+        },
+      }
+    );
+    console.log('✅ API 호출 성공: 진단 테스트 시작', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 진단 테스트 시작 실패:', error);
+    throw error;
+  }
 };
 
 // 진단 테스트 상태 조회
@@ -81,10 +100,20 @@ export const getDiagnosticStatus = async (
   testId: string,
   userId: number
 ): Promise<DiagnosticStatus> => {
-  const response = await apiClient.get(
-    `/v1/diagnostics/${testId}/status?userId=${userId}`
+  console.log(
+    '🚀 API 호출 시작: 진단 테스트 상태 조회',
+    `${API_BASE_URL}/v1/diagnostics/${testId}/status?userId=${userId}`
   );
-  return response.data;
+  try {
+    const response = await apiClient.get(
+      `/v1/diagnostics/${testId}/status?userId=${userId}`
+    );
+    console.log('✅ API 호출 성공: 진단 테스트 상태 조회', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 진단 테스트 상태 조회 실패:', error);
+    throw error;
+  }
 };
 
 // 답안 제출
@@ -95,17 +124,26 @@ export const submitAnswer = async (
 ): Promise<AnswerSubmitResponse> => {
   const idempotencyKey = `idem_diag_submit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-  const response = await apiClient.post(
-    `/v1/diagnostics/${testId}/submit?userId=${userId}`,
-    data,
-    {
-      headers: {
-        'Idempotency-Key': idempotencyKey,
-      },
-    }
+  console.log(
+    '🚀 API 호출 시작: 답안 제출',
+    `${API_BASE_URL}/v1/diagnostics/${testId}/submit?userId=${userId}`
   );
-
-  return response.data;
+  try {
+    const response = await apiClient.post(
+      `/v1/diagnostics/${testId}/submit?userId=${userId}`,
+      data,
+      {
+        headers: {
+          'Idempotency-Key': idempotencyKey,
+        },
+      }
+    );
+    console.log('✅ API 호출 성공: 답안 제출', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 답안 제출 실패:', error);
+    throw error;
+  }
 };
 
 // 타임아웃 체크
@@ -113,10 +151,20 @@ export const checkTimeout = async (
   testId: string,
   userId: number
 ): Promise<TimeoutCheckResponse> => {
-  const response = await apiClient.get(
-    `/v1/diagnostics/${testId}/timeout-check?userId=${userId}`
+  console.log(
+    '🚀 API 호출 시작: 타임아웃 체크',
+    `${API_BASE_URL}/v1/diagnostics/${testId}/timeout-check?userId=${userId}`
   );
-  return response.data;
+  try {
+    const response = await apiClient.get(
+      `/v1/diagnostics/${testId}/timeout-check?userId=${userId}`
+    );
+    console.log('✅ API 호출 시작: 타임아웃 체크', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('❌ 타임아웃 체크 실패:', error);
+    throw error;
+  }
 };
 
 // Mock 데이터 (개발 환경용)

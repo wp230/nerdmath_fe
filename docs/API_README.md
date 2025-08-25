@@ -10,7 +10,8 @@
 6. [즐겨찾기](#즐겨찾기)
 7. [학습 진행률 및 대시보드](#학습-진행률-및-대시보드)
 8. [게이미피케이션](#게이미피케이션)
-9. [API 사용 예시](#api-사용-예시)
+9. [AI 도우미 API (FastAPI 서버)](#ai-도우미-api-fastapi-서버)
+10. [API 사용 예시](#api-사용-예시)
 
 ---
 
@@ -1169,6 +1170,155 @@
 | 7 → 8  | 725     | 2275    | +175   |
 | 8 → 9  | 925     | 3200    | +200   |
 | 9 → 10 | 1150    | 4350    | +225   |
+
+---
+
+## AI 도우미 API (FastAPI 서버)
+
+### 9-1. 통합 문제 풀이 API
+
+- **POST** `/api/solve_with_problem`
+- **Auth**: ❌ / **Idempotent**: ❌ / **Mode**: Sync
+- **Headers**: `Content-Type: application/json`
+- **Description**: 문제 ID를 받아 MongoDB에서 문제를 조회하고 AI가 단계별로 풀이합니다.
+
+#### Request Body
+
+```json
+{
+  "problem_id": "problem_001",
+  "question": "이 문제를 풀어주세요",
+  "session_id": "user_session_123"
+}
+```
+
+#### Response 200
+
+```json
+{
+  "problem": {
+    "problem_id": "problem_001",
+    "content": {
+      "question": "5 + 3 = ?",
+      "options": ["7", "8", "9", "10"],
+      "correctAnswer": "8",
+      "explanation": "5에 3을 더하면 8입니다."
+    },
+    "grade": 1,
+    "level": "easy",
+    "tags": ["덧셈", "기초"]
+  },
+  "ai_solution": {
+    "mode": "solve",
+    "steps": [
+      {
+        "idx": 1,
+        "latex": "5 + 3",
+        "explain": "문제를 확인합니다. 5에 3을 더하는 식입니다."
+      },
+      {
+        "idx": 2,
+        "latex": "8",
+        "explain": "5에 3을 더하면 8이 됩니다."
+      }
+    ],
+    "latex_blocks": ["5 + 3 = 8"],
+    "one_line_summary": "5 + 3의 결과는 8입니다.",
+    "confidence": 0.9
+  },
+  "status": "success"
+}
+```
+
+---
+
+### 9-2. 통합 개념 설명 API
+
+- **POST** `/api/concept_with_problem`
+- **Auth**: ❌ / **Idempotent**: ❌ / **Mode**: Sync
+- **Headers**: `Content-Type: application/json`
+- **Description**: 문제와 관련된 수학 개념을 AI가 설명합니다.
+
+#### Request Body
+
+```json
+{
+  "problem_id": "problem_001",
+  "concept_name": "덧셈의 기본 개념",
+  "session_id": "user_session_123"
+}
+```
+
+#### Response 200
+
+```json
+{
+  "problem": {
+    "problem_id": "problem_001",
+    "content": {
+      "question": "5 + 3 = ?",
+      "options": ["7", "8", "9", "10"]
+    }
+  },
+  "ai_concept": {
+    "mode": "concept",
+    "concept_name": "덧셈",
+    "explanation": "덧셈은 두 수를 합하여 더 큰 수를 만드는 연산입니다...",
+    "examples": ["2 + 3 = 5", "10 + 7 = 17"],
+    "related_concepts": ["뺄셈", "자릿수"],
+    "confidence": 0.95
+  },
+  "status": "success"
+}
+```
+
+---
+
+### 9-3. 기존 AI API (개별 호출)
+
+#### POST `/api/ai/solve`
+
+- **Auth**: ✅ (X-Service-Token: test-token)
+- **Description**: 문제 텍스트를 직접 전달하여 AI가 풀이합니다.
+
+#### POST `/api/ai/concept`
+
+- **Auth**: ✅ (X-Service-Token: test-token)
+- **Description**: 개념명을 전달하여 AI가 설명합니다.
+
+#### POST `/api/ai/rag_recommend`
+
+- **Auth**: ✅ (X-Service-Token: test-token)
+- **Description**: 문제 텍스트를 전달하여 AI가 관련 자료를 추천합니다.
+
+---
+
+### 9-4. AI API 오류 응답
+
+#### 400 Bad Request
+
+```json
+{
+  "error": "problem_id가 필요합니다."
+}
+```
+
+#### 404 Not Found
+
+```json
+{
+  "error": "문제 ID problem_001을 찾을 수 없습니다."
+}
+```
+
+#### 500 Internal Server Error
+
+```json
+{
+  "error": "문제 풀이 중 오류: OpenAI API 호출 실패",
+  "traceback": "Traceback (most recent call last)..."
+}
+```
 
 ---
 

@@ -13,18 +13,33 @@ import {
   AnswerSubmitRequest,
 } from '@/types/diagnostics';
 import React from 'react';
+import { mockServiceManager } from '@/service/mockServiceManager';
 
-// 환경에 따라 실제 API 또는 Mock 서비스 선택
-const isDevelopment = process.env.NODE_ENV === 'development';
-const service = isDevelopment
-  ? mockDiagnosticService
-  : {
-      checkEligibility: checkDiagnosticEligibility,
-      startTest: startDiagnosticTest,
-      getStatus: getDiagnosticStatus,
-      submitAnswer: submitAnswer,
-      checkTimeout: checkTimeout,
-    };
+// 환경에 따라 실제 API 또는 Mock 서비스 선택 (MockServiceManager 우선)
+const getService = () => {
+  if (mockServiceManager.isMockEnabled()) {
+    console.log('🔧 MockServiceManager: Using Mock Diagnostics Service');
+    return mockDiagnosticService;
+  }
+
+  // 기존 로직 (하위 호환성 유지)
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  if (isDevelopment) {
+    console.log('🔧 Development Mode: Using Mock Diagnostics Service');
+    return mockDiagnosticService;
+  }
+
+  console.log('🔧 Production Mode: Using API Diagnostics Service');
+  return {
+    checkEligibility: checkDiagnosticEligibility,
+    startTest: startDiagnosticTest,
+    getStatus: getDiagnosticStatus,
+    submitAnswer: submitAnswer,
+    checkTimeout: checkTimeout,
+  };
+};
+
+const service = getService();
 
 // 진단 테스트 자격 확인
 export const useDiagnosticEligibility = (userId: number) => {

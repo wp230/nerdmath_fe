@@ -67,27 +67,27 @@ export default function DashboardPage() {
             <div className="w-80 space-y-6 mt-12  ">
               <div>임시 학습버튼 바로가기</div>
               <div className="flex flex-col gap-2">
-                <Link href="/math/1">
+                <Link href="/math/unit_01">
                   <div className="bg-blue-500 text-white px-4 py-2 rounded-md">
                     수와 연산
                   </div>
                 </Link>
-                <Link href="/math/2">
+                <Link href="/math/unit_02">
                   <div className="bg-blue-500 text-white px-4 py-2 rounded-md">
                     문자와 식
                   </div>
                 </Link>
-                <Link href="/math/3">
+                <Link href="/math/unit_03">
                   <div className="bg-blue-500 text-white px-4 py-2 rounded-md">
                     함수
                   </div>
                 </Link>
-                <Link href="/math/4">
+                <Link href="/math/unit_04">
                   <div className="bg-blue-500 text-white px-4 py-2 rounded-md">
                     확률과 통계
                   </div>
                 </Link>
-                <Link href="/math/5">
+                <Link href="/math/unit_05">
                   <div className="bg-blue-500 text-white px-4 py-2 rounded-md">
                     기하
                   </div>

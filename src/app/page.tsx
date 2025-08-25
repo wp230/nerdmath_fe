@@ -1,174 +1,150 @@
+import React from 'react';
 import Link from 'next/link';
 
-export function Background() {
+export default function HomePage() {
   return (
-    <div className="fixed inset-0 w-full h-full -z-10">
-      {/* Base gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"></div>
-
-      {/* Mathematical symbols layer */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-10 left-10 text-6xl text-blue-400 font-mono animate-pulse">
-          ∫
-        </div>
-        <div
-          className="absolute top-20 right-20 text-5xl text-cyan-400 font-mono animate-pulse"
-          style={{ animationDelay: '1s' }}
-        >
-          ∑
-        </div>
-        <div
-          className="absolute top-40 left-1/4 text-4xl text-purple-400 font-mono animate-pulse"
-          style={{ animationDelay: '2s' }}
-        >
-          π
-        </div>
-        <div
-          className="absolute top-60 right-1/3 text-5xl text-green-400 font-mono animate-pulse"
-          style={{ animationDelay: '3s' }}
-        >
-          ∞
-        </div>
-        <div
-          className="absolute bottom-40 left-20 text-6xl text-pink-400 font-mono animate-pulse"
-          style={{ animationDelay: '4s' }}
-        >
-          √
-        </div>
-        <div
-          className="absolute bottom-20 right-10 text-4xl text-yellow-400 font-mono animate-pulse"
-          style={{ animationDelay: '5s' }}
-        >
-          θ
-        </div>
-        <div
-          className="absolute bottom-60 left-1/3 text-5xl text-indigo-400 font-mono animate-pulse"
-          style={{ animationDelay: '6s' }}
-        >
-          Δ
-        </div>
-      </div>
-
-      {/* Geometric grid pattern */}
-      <div className="absolute inset-0 opacity-15">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(90deg, rgba(59, 130, 246, 0.2) 1px, transparent 1px),
-              linear-gradient(rgba(59, 130, 246, 0.2) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px',
-          }}
-        ></div>
-      </div>
-
-      {/* Floating geometric elements */}
-      <div className="absolute inset-0 opacity-40">
-        <div className="absolute top-32 left-16 w-16 h-16 border-2 border-blue-400 rounded-lg transform rotate-45 animate-float-math"></div>
-        <div className="absolute top-48 right-32 w-12 h-12 border-2 border-cyan-400 rounded-full animate-float-math-delayed"></div>
-        <div className="absolute bottom-48 left-32 w-20 h-20 border-2 border-purple-400 transform rotate-12 animate-float-math-slow"></div>
-        <div className="absolute bottom-32 right-16 w-14 h-14 border-2 border-green-400 rounded-lg transform -rotate-45 animate-float-math-delayed"></div>
-      </div>
-    </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <div className="min-h-screen relative">
-      <Background />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24">
-        {/* 히어로 섹션 */}
-        
-        <section className="text-center mt-16 mb-16">
-          <h1 className="text-5xl font-bold text-white mb-6 font-DungGeunMo drop-shadow-lg">
-            수학, 한계를 넘어서 세계로
-          </h1>
-          <p className="text-xl text-gray-200 mb-8 drop-shadow-md">
-            영어 기반 수학 학습 플랫폼{' '}
-            <span className="font-bold text-blue-300">NerdMath</span>에서
-            <br />
-            글로벌 수학 사고력과 진짜 실력을 키워보세요.
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* 메인 콘텐츠 */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center">
+          <h2 className="text-5xl font-bold text-gray-900 mb-6">
+            수학 학습의 새로운 시작
+          </h2>
+          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
+            AI 기반 진단 테스트로 개인 맞춤형 학습을 경험해보세요. 어휘, 개념,
+            문제 풀이를 통합적으로 학습할 수 있습니다.
           </p>
 
-          <div className="flex justify-center space-x-4">
-            <Link href="/diagnostics" className="btn-primary text-lg px-8 py-4">
-              시작하기
-            </Link>
-          </div>
-        </section>
-
-        {/* 특징 섹션 */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center border border-white/30 hover:bg-white/100 transition-all duration-300">
-            <div className="text-4xl mb-4">🎯</div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              정확한 진단
-            </h3>
-            <p className="text-gray-600">
-              AI 알고리즘을 통해 현재 수학 실력을 정확하게 파악합니다
-            </p>
-          </div>
-
-          <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center border border-white/30 hover:bg-white/100 transition-all duration-300">
-            <div className="text-4xl mb-4">📊</div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              맞춤형 분석
-            </h3>
-            <p className="text-gray-600">
-              개인의 강점과 약점을 분석하여 최적의 학습 계획을 제시합니다
-            </p>
-          </div>
-
-          <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center border border-white/30 hover:bg-white/100 transition-all duration-300">
-            <div className="text-4xl mb-4">🚀</div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              효율적 학습
-            </h3>
-            <p className="text-gray-600">
-              불필요한 반복을 줄이고 핵심 개념에 집중할 수 있습니다
-            </p>
-          </div>
-        </div>
-
-        {/* 진단 과정 설명 */}
-        <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-8 mb-16 border border-white/30">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-            진단 테스트 과정
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-blue-600">1</span>
+          {/* 주요 기능 카드들 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg
+                  className="w-8 h-8 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
               </div>
-              <h4 className="font-semibold text-gray-800 mb-2">테스트 설정</h4>
-              <p className="text-sm text-gray-600">학년 범위 설정</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-blue-600">2</span>
-              </div>
-              <h4 className="font-semibold text-gray-800 mb-2">문제 풀이</h4>
-              <p className="text-sm text-gray-600">
-                제한 시간 내 문제 풀이 진행
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                진단 테스트
+              </h3>
+              <p className="text-gray-600 mb-6">
+                현재 수학 실력을 정확히 파악하고 맞춤형 학습 계획을 세워보세요.
               </p>
+              <Link
+                href="/diagnostics"
+                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                시작하기
+              </Link>
             </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-blue-600">3</span>
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg
+                  className="w-8 h-8 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
               </div>
-              <h4 className="font-semibold text-gray-800 mb-2">결과 분석</h4>
-              <p className="text-sm text-gray-600">
-                상세한 분석 결과와 학습 가이드
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                어휘 학습
+              </h3>
+              <p className="text-gray-600 mb-6">
+                수학 용어와 개념을 체계적으로 학습하고 어휘력을 향상시켜보세요.
+              </p>
+              <Link
+                href="/voca"
+                className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+              >
+                시작하기
+              </Link>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg
+                  className="w-8 h-8 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                수학 학습
+              </h3>
+              <p className="text-gray-600 mb-6">
+                개념 이해부터 문제 풀이까지 단계별로 체계적인 학습을
+                진행해보세요.
+              </p>
+              <Link
+                href="/math"
+                className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                시작하기
+              </Link>
+            </div>
+          </div>
+
+          {/* 개발자 정보 */}
+          <div className="bg-gray-50 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              🔧 개발자 도구
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Mock 서비스 제어가 필요하시다면 우측 하단의 설정 아이콘을
+              클릭하세요.
+            </p>
+            <div className="text-sm text-gray-500 space-y-1">
+              <p>
+                • Console에서 직접 제어:{' '}
+                <code className="bg-gray-200 px-2 py-1 rounded">
+                  window.enableGlobalMock()
+                </code>
+              </p>
+              <p>
+                • 상태 확인:{' '}
+                <code className="bg-gray-200 px-2 py-1 rounded">
+                  window.mockServiceManager.logStatus()
+                </code>
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* 푸터 */}
+      <footer className="bg-white/95 backdrop-blur-sm border-t border-white/20 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="text-center text-gray-600 text-sm">
+            <p>&copy; 2024 NerdMath. All rights reserved.</p>
+            <p className="mt-1">개인 맞춤형 수학 학습을 위한 AI 기반 시스템</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
