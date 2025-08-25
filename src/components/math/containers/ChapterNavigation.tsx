@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChapterData } from '../../types/math';
+import { ChapterData } from '@/types/math';
 import { ChapterDropdown } from '../ui/ChapterDropdown';
 import { StartButton } from '../ui/StartButton';
 import { useMathStore } from '../../../stores/mathStore';
