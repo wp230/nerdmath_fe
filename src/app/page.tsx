@@ -101,10 +101,36 @@ export default function HomePage() {
                 진행해보세요.
               </p>
               <Link
-                href="/math"
+                href="/math/unit_01"
                 className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
               >
-                시작하기
+                1단원 학습하기
+              </Link>
+
+              <Link
+                href="/math/unit_02"
+                className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                2단원 학습하기
+              </Link>
+              <Link
+                href="/math/unit_03"
+                className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                3단원 학습하기
+              </Link>
+
+              <Link
+                href="/math/unit_04"
+                className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                4단원 학습하기
+              </Link>
+              <Link
+                href="/math/unit_05"
+                className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                5단원 학습하기
               </Link>
             </div>
           </div>

@@ -279,6 +279,69 @@ export class LearningService {
     }
   }
 
+  // 학습 진행률 조회
+  static async getLearningProgress(
+    unitId: string,
+    conceptId?: string
+  ): Promise<{
+    unitId: string;
+    conceptProgress: number;
+    problemProgress: number;
+    vocabProgress: number;
+    overallProgress: number;
+    status: 'not_started' | 'in_progress' | 'completed';
+  }> {
+    if (shouldUseMock()) {
+      console.log('🔄 Mock 데이터 사용: 학습 진행률 조회');
+      return {
+        unitId,
+        conceptProgress: 75,
+        problemProgress: 60,
+        vocabProgress: 80,
+        overallProgress: 72,
+        status: 'in_progress',
+      };
+    }
+
+    console.log(
+      '🚀 API 호출 시작: 학습 진행률 조회',
+      `${API_BASE_URL}/v1/learning/progress/${unitId}${conceptId ? `/${conceptId}` : ''}`
+    );
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/v1/learning/progress/${unitId}${conceptId ? `/${conceptId}` : ''}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Request-Id': generateRequestId('progress_get'),
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `API 호출 실패: ${response.status} ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log('✅ API 호출 성공: 학습 진행률 조회', data);
+      return data;
+    } catch (error) {
+      console.error('❌ 학습 진행률 조회 실패:', error);
+      console.log('🔄 Mock 데이터로 폴백');
+      return {
+        unitId,
+        conceptProgress: 75,
+        problemProgress: 60,
+        vocabProgress: 80,
+        overallProgress: 72,
+        status: 'in_progress',
+      };
+    }
+  }
+
   // 실제 API 호출 - 개념 학습 완료
   static async completeConcept(
     unitId: string,

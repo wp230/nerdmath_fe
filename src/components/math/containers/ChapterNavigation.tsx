@@ -10,11 +10,13 @@ interface ChapterNavigationProps {
   unitId: string;
 }
 
-export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({ 
-  chapters, 
-  unitId 
+export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
+  chapters,
+  unitId,
 }) => {
-  const [selectedChapter, setSelectedChapter] = useState<ChapterData | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<ChapterData | null>(
+    null
+  );
   const router = useRouter();
   const { setCurrentChapter } = useMathStore();
 
@@ -24,8 +26,10 @@ export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
   };
 
   const handleStart = (chapter: ChapterData) => {
-    // 화면2로 이동: /learning/[unitId]
-    router.push(`/learning/${unitId}`);
+    // 화면2로 이동: /learning/[unitId]/[chapterId]
+    if (chapter) {
+      router.push(`/learning/${unitId}/${chapter.chapter}`);
+    }
   };
 
   return (
@@ -53,10 +57,7 @@ export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
         </div>
 
         <div className="mb-6">
-          <StartButton
-            chapter={selectedChapter}
-            onStart={handleStart}
-          />
+          <StartButton chapter={selectedChapter} onStart={handleStart} />
         </div>
 
         {/* 선택된 소단원 정보 */}
@@ -65,19 +66,24 @@ export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
             <h3 className="text-lg font-semibold text-blue-900 mb-3">
               📖 {selectedChapter.title}
             </h3>
-            <p className="text-blue-800 mb-4">
-              {selectedChapter.description}
-            </p>
+            <p className="text-blue-800 mb-4">{selectedChapter.description}</p>
             <div className="flex items-center gap-4 text-sm text-blue-700">
               <span>학년: {selectedChapter.grade}학년</span>
               <span>진행률: {selectedChapter.progress || 0}%</span>
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                selectedChapter.status === 'completed' ? 'bg-green-100 text-green-800' :
-                selectedChapter.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
-                {selectedChapter.status === 'completed' ? '완료' :
-                 selectedChapter.status === 'in_progress' ? '진행중' : '미시작'}
+              <span
+                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  selectedChapter.status === 'completed'
+                    ? 'bg-green-100 text-green-800'
+                    : selectedChapter.status === 'in_progress'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-gray-100 text-gray-800'
+                }`}
+              >
+                {selectedChapter.status === 'completed'
+                  ? '완료'
+                  : selectedChapter.status === 'in_progress'
+                    ? '진행중'
+                    : '미시작'}
               </span>
             </div>
           </div>
@@ -104,17 +110,28 @@ export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
                 <span className="text-sm font-medium text-gray-500">
                   {chapter.chapter}장
                 </span>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  chapter.status === 'completed' ? 'bg-green-100 text-green-800' :
-                  chapter.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
-                  {chapter.status === 'completed' ? '완료' :
-                   chapter.status === 'in_progress' ? '진행중' : '미시작'}
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    chapter.status === 'completed'
+                      ? 'bg-green-100 text-green-800'
+                      : chapter.status === 'in_progress'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {chapter.status === 'completed'
+                    ? '완료'
+                    : chapter.status === 'in_progress'
+                      ? '진행중'
+                      : '미시작'}
                 </span>
               </div>
-              <h4 className="font-medium text-gray-900 mb-1">{chapter.title}</h4>
-              <p className="text-sm text-gray-600 line-clamp-2">{chapter.subtitle}</p>
+              <h4 className="font-medium text-gray-900 mb-1">
+                {chapter.title}
+              </h4>
+              <p className="text-sm text-gray-600 line-clamp-2">
+                {chapter.subtitle}
+              </p>
             </div>
           ))}
         </div>

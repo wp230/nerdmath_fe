@@ -9,11 +9,6 @@
   "env": {
     "NEXT_PUBLIC_ENV": "production"
   },
-  "functions": {
-    "src/app/**/*.tsx": {
-      "maxDuration": 30
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",

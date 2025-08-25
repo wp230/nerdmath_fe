@@ -6,7 +6,7 @@ import { LearningModeSelector } from '../../../../components/learning/containers
 import { ConceptCompletionModal } from '../../../../components/learning/ui/ConceptCompletionModal';
 import { PracticeMode } from '../../../../components/learning/containers/PracticeMode';
 import { ConceptLearningResult } from '../../../../types/learning';
-import { LearningService } from '../../../../service/learning/learningService';
+import * as LearningServiceModule from '../../../../service/learning/learningService';
 import { useChapterData } from '../../../../hooks/math/useChapterData';
 import { useUnitData } from '../../../../hooks/math/useUnitData';
 
@@ -66,7 +66,11 @@ export default function ChapterLearningPage({
       const conceptId = `${unitId}_${chapterId}`;
 
       // 올바른 메서드 호출
-      const result = await LearningService.completeConcept(unitId, conceptId);
+      const result =
+        await LearningServiceModule.LearningService.completeConcept(
+          unitId,
+          conceptId
+        );
 
       console.log('✅ 개념 학습 완료 API 호출 성공:', result);
       setConceptResult(result);
