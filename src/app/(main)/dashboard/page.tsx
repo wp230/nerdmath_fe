@@ -1,5 +1,6 @@
 import Link from 'next/link';
-
+//여러 화면 바로가기 및 학습 분석 및 통계 확인 화면
+//사용자 간단한 정보 확인 화면
 export default function DashboardPage() {
   return (
     <div className="container mx-auto px-4 py-8">

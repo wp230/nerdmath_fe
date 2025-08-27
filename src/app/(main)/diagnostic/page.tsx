@@ -1,5 +1,5 @@
 import Link from 'next/link';
-
+//진단시작 및 결과확인 화면
 export default function DiagnosticPage() {
   return (
     <div className="container mx-auto px-4 py-8">
