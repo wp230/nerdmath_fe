@@ -1,5 +1,5 @@
 import '../globals.css';
-import StudyLayout from '@/component/layout/study/StudyLayout';
+import StudyLayout from '@/components/layout/study/StudyLayout';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
