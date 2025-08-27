@@ -2,17 +2,20 @@ import React from 'react';
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  as?: React.ElementType;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   fullWidth?: boolean;
+  href?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
+      as: Component = 'button',
       variant = 'primary',
       size = 'md',
       isLoading = false,
@@ -99,7 +102,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ].join(' ');
 
     return (
-      <button
+      <Component
         ref={ref}
         className={allClasses}
         disabled={disabled || isLoading}
@@ -132,7 +135,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
 
         {!isLoading && rightIcon && <span className="ml-2">{rightIcon}</span>}
-      </button>
+      </Component>
     );
   }
 );
