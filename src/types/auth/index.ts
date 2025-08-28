@@ -1,19 +1,27 @@
-import type { User } from '@/types/common';
+// ============================================================================
+// 사용자 타입 (로그인용)
+// ============================================================================
+
+export interface LoginUser {
+  userId: number;
+  email: string;
+  name: string;
+  nickname: string;
+  emailVerified: number; // 0: 미인증, 1: 인증완료
+}
 
 // ============================================================================
 // 로그인 관련 타입
 // ============================================================================
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface LoginResponse {
-  user: User;
   accessToken: string;
-  refreshToken: string;
-  expiresIn: number; // 토큰 만료 시간 (초)
+  user: LoginUser;
 }
 
 // ============================================================================
@@ -21,138 +29,88 @@ export interface LoginResponse {
 // ============================================================================
 
 export interface RegisterRequest {
-  username: string;
   email: string;
   password: string;
-  passwordConfirm: string;
+  name: string;
+  birthDate: string; // YYYY-MM-DD 형식
+  phoneNumber: string;
   nickname: string;
-  verificationCode: string;
+  gender: 'male' | 'female';
 }
 
 export interface RegisterResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+  userId: number;
+  email: string;
+  message: string;
 }
 
 // ============================================================================
 // 이메일 인증 관련 타입
 // ============================================================================
 
-export interface SendVerificationCodeRequest {
+export interface SendVerificationRequest {
   email: string;
-  type: 'REGISTER' | 'PASSWORD_RESET';
 }
 
-export interface SendVerificationCodeResponse {
-  success: boolean;
+export interface SendVerificationResponse {
   message: string;
-  expiresIn: number; // 인증코드 만료 시간 (초)
+  email: string;
+  expiresIn: string;
 }
 
-export interface VerifyCodeRequest {
+export interface CheckVerificationRequest {
   email: string;
   code: string;
-  type: 'REGISTER' | 'PASSWORD_RESET';
 }
 
-export interface VerifyCodeResponse {
-  isValid: boolean;
+export interface CheckVerificationResponse {
+  emailVerified?: boolean; // 대문자 버전 (실제 응답)
   message: string;
 }
 
 // ============================================================================
-// 토큰 관련 타입
+// 프로필 조회 관련 타입
 // ============================================================================
 
-export interface RefreshTokenRequest {
-  refreshToken: string;
-}
-
-export interface RefreshTokenResponse {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-}
-
-// ============================================================================
-// 비밀번호 재설정 관련 타입
-// ============================================================================
-
-export interface ResetPasswordRequest {
+export interface ProfileResponse {
+  userId: number;
   email: string;
+  name: string;
+  nickname: string;
+  birthDate: string;
+  phoneNumber: string;
+  gender: 'male' | 'female';
+  emailVerified: number; // 0: 미인증, 1: 인증완료
+  createdAt: string;
+}
+
+// ============================================================================
+// 로그아웃 관련 타입
+// ============================================================================
+
+export interface LogoutResponse {
+  message: string;
+}
+
+// ============================================================================
+// 폼 검증 관련 타입
+// ============================================================================
+
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterFormData {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  name: string;
+  birthDate: string;
+  phoneNumber: string;
+  nickname: string;
+  gender: 'male' | 'female' | '';
   verificationCode: string;
-  newPassword: string;
-  newPasswordConfirm: string;
-}
-
-export interface ResetPasswordResponse {
-  success: boolean;
-  message: string;
-}
-
-// ============================================================================
-// 프로필 업데이트 관련 타입
-// ============================================================================
-
-export interface UpdateProfileRequest {
-  nickname?: string;
-  profileImage?: string;
-}
-
-export interface UpdateProfileResponse {
-  user: User;
-}
-
-export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
-  newPasswordConfirm: string;
-}
-
-export interface ChangePasswordResponse {
-  success: boolean;
-  message: string;
-}
-
-// ============================================================================
-// 소셜 로그인 관련 타입 (향후 확장용)
-// ============================================================================
-
-export interface SocialLoginRequest {
-  provider: 'GOOGLE' | 'KAKAO' | 'NAVER';
-  accessToken: string;
-}
-
-export interface SocialLoginResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-  isNewUser: boolean; // 신규 가입 여부
-}
-
-// ============================================================================
-// 계정 검증 관련 타입
-// ============================================================================
-
-export interface CheckUsernameRequest {
-  username: string;
-}
-
-export interface CheckUsernameResponse {
-  isAvailable: boolean;
-  message: string;
-}
-
-export interface CheckEmailRequest {
-  email: string;
-}
-
-export interface CheckEmailResponse {
-  isAvailable: boolean;
-  message: string;
 }
 
 // ============================================================================
@@ -162,32 +120,7 @@ export interface CheckEmailResponse {
 export interface AuthError {
   code: string;
   message: string;
-  field?: string; // 특정 필드와 관련된 에러인 경우
-}
-
-// ============================================================================
-// 폼 검증 관련 타입
-// ============================================================================
-
-export interface LoginFormData {
-  username: string;
-  password: string;
-}
-
-export interface RegisterFormData {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-  nickname: string;
-  verificationCode: string;
-}
-
-export interface ResetPasswordFormData {
-  email: string;
-  verificationCode: string;
-  newPassword: string;
-  newPasswordConfirm: string;
+  field?: string;
 }
 
 // ============================================================================
@@ -195,11 +128,6 @@ export interface ResetPasswordFormData {
 // ============================================================================
 
 export interface ValidationRules {
-  username: {
-    minLength: number;
-    maxLength: number;
-    pattern: RegExp;
-  };
   password: {
     minLength: number;
     maxLength: number;
@@ -211,19 +139,21 @@ export interface ValidationRules {
   email: {
     pattern: RegExp;
   };
+  name: {
+    minLength: number;
+    maxLength: number;
+  };
   nickname: {
     minLength: number;
     maxLength: number;
+  };
+  phoneNumber: {
+    pattern: RegExp;
   };
 }
 
 // 기본 검증 규칙
 export const defaultValidationRules: ValidationRules = {
-  username: {
-    minLength: 4,
-    maxLength: 20,
-    pattern: /^[a-zA-Z0-9_]+$/,
-  },
   password: {
     minLength: 8,
     maxLength: 50,
@@ -235,8 +165,15 @@ export const defaultValidationRules: ValidationRules = {
   email: {
     pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   },
-  nickname: {
+  name: {
     minLength: 2,
     maxLength: 20,
+  },
+  nickname: {
+    minLength: 2,
+    maxLength: 30,
+  },
+  phoneNumber: {
+    pattern: /^010-\d{4}-\d{4}$/,
   },
 };

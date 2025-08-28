@@ -11,6 +11,7 @@ export {
   useBookmarksQuery,
   useActiveLearningQuery,
   useDashboardQueries,
+  useDiagnosticAnalysisQuery,
 } from './useDashboardQueries';
 
 // Mutations

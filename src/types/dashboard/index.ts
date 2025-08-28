@@ -158,18 +158,24 @@ export interface BookmarkReviewRequest {
 }
 
 // ============================================================================
-// 학습 재개 관련 타입
+// 진단 분석 결과 관련 타입 (API 2.8)
 // ============================================================================
 
-export interface ActiveLearningSession {
-  learningTimeId: string;
-  activityType: 'concept_learning' | 'problem_solving' | 'vocabulary_learning';
-  startedAt: string;
-  elapsedSeconds: number;
+export interface RecommendedPath {
+  unitId: string;
+  unitTitle: string;
+  priority: number;
+  reason: string;
 }
 
-export interface ActiveLearning {
-  activeSession: ActiveLearningSession | null;
+export interface DiagnosticAnalysis {
+  analysisId: string;
+  testId: string;
+  userId: number;
+  aiComment: string;
+  class: string;
+  recommendedPath: RecommendedPath[];
+  generatedAt: string;
 }
 
 // ============================================================================

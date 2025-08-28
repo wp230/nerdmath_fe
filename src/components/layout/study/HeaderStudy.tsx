@@ -1,14 +1,21 @@
 'use client';
 
 import Link from 'next/link';
+import { useLogoutMutation } from '@/hooks/auth';
 
 export default function HeaderStudy() {
+  const logoutMutation = useLogoutMutation();
+
   // 하드코딩된 예시 데이터
   const studyProgress = {
     majorName: '함수',
     minorName: '일차함수',
     progressType: 'concept',
     progressPercent: 75,
+  };
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
   };
   return (
     <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-white/20 relative z-20">
@@ -26,10 +33,10 @@ export default function HeaderStudy() {
           <div className="flex items-center gap-1 sm:gap-2 lg:gap-3">
             {/* 대단원/소단원 이름 */}
             <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
-              <h2 className="text-base sm:text-lg lg:text-xl font-bold text-gray-800">
+              <h2 className="text-base sm:text-lg lg:text-xl font-bold text-gray-800 font-DungGeunMo">
                 {studyProgress.majorName}
               </h2>
-              <h3 className="text-sm sm:text-md lg:text-lg text-gray-600">
+              <h3 className="text-sm sm:text-md lg:text-lg text-gray-600 font-DungGeunMo">
                 {studyProgress.minorName}
               </h3>
             </div>
@@ -54,22 +61,23 @@ export default function HeaderStudy() {
         <nav className="flex space-x-1 sm:space-x-2 lg:space-x-4">
           <Link
             href="/math"
-            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors font-DungGeunMo"
           >
             알림
           </Link>
           <Link
             href="/math"
-            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors font-DungGeunMo"
           >
             프로필
           </Link>
-          <Link
-            href="/math"
-            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+          <button
+            onClick={handleLogout}
+            disabled={logoutMutation.isPending}
+            className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 font-DungGeunMo"
           >
-            로그아웃
-          </Link>
+            {logoutMutation.isPending ? '로그아웃 중...' : '로그아웃'}
+          </button>
         </nav>
       </div>
     </header>

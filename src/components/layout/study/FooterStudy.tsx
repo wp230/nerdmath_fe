@@ -47,8 +47,8 @@ export default function FooterStudy() {
   return (
     <>
       <footer className="flex h-16 items-center justify-between border-t bg-gray-50 px-4">
-        <button className="text-sm">📖 목차</button>
-        <button className="text-sm">다음 ▶</button>
+        <button className="text-sm font-DungGeunMo">📖 목차</button>
+        <button className="text-sm font-DungGeunMo">다음 ▶</button>
       </footer>
 
       {/* 플로팅 챗봇 버튼 */}
@@ -64,7 +64,7 @@ export default function FooterStudy() {
         <div className="fixed bottom-24 right-6 bg-white rounded-lg w-[480px] h-[600px] flex flex-col shadow-2xl border z-50">
           {/* 헤더 */}
           <div className="flex items-center justify-between p-4 border-b">
-            <h3 className="font-semibold">학습 도우미</h3>
+            <h3 className="font-semibold font-DungGeunMo">학습 도우미</h3>
             <button
               onClick={() => setIsChatOpen(false)}
               className="text-gray-500 hover:text-gray-700"
@@ -106,7 +106,7 @@ export default function FooterStudy() {
               />
               <button
                 onClick={handleSendMessage}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-DungGeunMo"
               >
                 전송
               </button>

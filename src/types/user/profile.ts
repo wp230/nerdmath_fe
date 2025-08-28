@@ -2,7 +2,7 @@
 
 import { BaseEntity, UserId, Gender } from '../common/database';
 
-// 사용자 기본 정보
+// 사용자 기본 정보 (테이블 정의서 기준)
 export interface User extends BaseEntity {
   userId: UserId;
   email: string;
@@ -12,11 +12,6 @@ export interface User extends BaseEntity {
   phoneNumber: string;
   nickname: string;
   gender: Gender;
-  emailVerified: boolean;
-  isActive: boolean;
-  agreeTerms: boolean;
-  agreePrivacy: boolean;
-  agreeMarketing?: boolean;
 }
 
 // 사용자 생성 요청
@@ -28,9 +23,6 @@ export interface CreateUserRequest {
   phoneNumber: string;
   nickname: string;
   gender: Gender;
-  agreeTerms: boolean;
-  agreePrivacy: boolean;
-  agreeMarketing?: boolean;
 }
 
 // 사용자 정보 수정 요청
@@ -39,23 +31,18 @@ export interface UpdateUserRequest {
   phoneNumber?: string;
   nickname?: string;
   gender?: Gender;
-  agreeMarketing?: boolean;
 }
 
-// 사용자 프로필 조회 응답
+// 사용자 프로필 조회 응답 (API 응답 기준)
 export interface UserProfileResponse {
-  userId: UserId;
+  userId: number;
   email: string;
   name: string;
+  nickname: string;
   birthDate: string;
   phoneNumber: string;
-  nickname: string;
-  gender: Gender;
-  emailVerified: boolean;
-  isActive: boolean;
-  agreeTerms: boolean;
-  agreePrivacy: boolean;
-  agreeMarketing: boolean;
+  gender: 'male' | 'female';
+  emailVerified: number;
   createdAt: string;
 }
 
@@ -65,7 +52,6 @@ export interface UserSummary {
   name: string;
   nickname: string;
   emailVerified: boolean;
-  isActive: boolean;
 }
 
 // 사용자 검색 필터
@@ -74,6 +60,5 @@ export interface UserSearchFilter {
   name?: string;
   nickname?: string;
   gender?: Gender;
-  isActive?: boolean;
   emailVerified?: boolean;
 }

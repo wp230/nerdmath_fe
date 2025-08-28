@@ -1,18 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button, Spinner } from '@/components/common';
-import type { ActivityStats, ActiveLearningSession } from '@/types/dashboard';
+import type { ActivityStats } from '@/types/dashboard';
 
 interface MainProgressBannerProps {
   activityStats?: ActivityStats;
-  activeLearning?: ActiveLearningSession | null;
   isLoading?: boolean;
   error?: any;
 }
 
 const MainProgressBanner: React.FC<MainProgressBannerProps> = ({
   activityStats,
-  activeLearning,
   isLoading,
   error,
 }) => {
@@ -49,95 +47,6 @@ const MainProgressBanner: React.FC<MainProgressBannerProps> = ({
       ? `${hours}시간 ${remainingMinutes}분`
       : `${hours}시간`;
   };
-
-  const getElapsedTime = (startedAt: string): string => {
-    const now = new Date();
-    const start = new Date(startedAt);
-    const diffMs = now.getTime() - start.getTime();
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-    return formatTime(diffMinutes);
-  };
-
-  const getActivityTypeText = (type: string): string => {
-    switch (type) {
-      case 'concept_learning':
-        return '개념 학습';
-      case 'problem_solving':
-        return '문제 풀이';
-      case 'vocabulary_learning':
-        return '어휘 학습';
-      default:
-        return '학습';
-    }
-  };
-
-  const getActivityTypeLink = (type: string): string => {
-    switch (type) {
-      case 'concept_learning':
-        return '/study/concept';
-      case 'problem_solving':
-        return '/study/problem';
-      case 'vocabulary_learning':
-        return '/study/vocabulary';
-      default:
-        return '/study';
-    }
-  };
-
-  // 진행 중인 학습이 있는 경우
-  if (activeLearning) {
-    return (
-      <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-lg shadow-lg p-8 text-white">
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <div className="flex items-center space-x-2 mb-2">
-              <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-white/90">진행 중</span>
-            </div>
-            <h2 className="text-3xl font-bold mb-2">
-              {getActivityTypeText(activeLearning.activityType)} 계속하기
-            </h2>
-            <p className="text-white/80 mb-4">
-              진행 시간: {getElapsedTime(activeLearning.startedAt)}
-            </p>
-            <div className="flex space-x-3">
-              <Button
-                as={Link}
-                href={getActivityTypeLink(activeLearning.activityType)}
-                variant="primary"
-                className="bg-white text-blue-600 hover:bg-gray-100"
-              >
-                이어서 학습하기
-              </Button>
-              <Button
-                variant="ghost"
-                className="text-white border-white hover:bg-white/10"
-              >
-                학습 종료
-              </Button>
-            </div>
-          </div>
-          <div className="hidden md:block">
-            <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
-              <svg
-                className="w-16 h-16 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.01M15 10h1.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // 오늘 학습한 경우
   if (activityStats && activityStats.todaySolved > 0) {
@@ -206,22 +115,12 @@ const MainProgressBanner: React.FC<MainProgressBannerProps> = ({
             시작하시겠어요?
           </p>
           <div className="flex space-x-3">
-            <Button
-              as={Link}
-              href="/course"
-              variant="primary"
-              className="bg-white text-indigo-600 hover:bg-gray-100"
-            >
-              학습 시작하기
-            </Button>
-            <Button
-              as={Link}
-              href="/diagnostic"
-              variant="ghost"
-              className="text-white border-white hover:bg-white/10"
-            >
-              실력 진단하기
-            </Button>
+            <div className="bg-white text-gray-700 hover:bg-gray-100 rounded-lg px-4 py-2">
+              맞춤형 학습
+            </div>
+            <div className="bg-white text-black hover:bg-gray-100 rounded-lg px-4 py-2">
+              직접 선택
+            </div>
           </div>
         </div>
         <div className="hidden md:block">

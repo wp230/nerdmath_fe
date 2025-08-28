@@ -1,6 +1,6 @@
 import '../globals.css';
 import Link from 'next/link';
-import { Providers } from '@/components/common';
+import { Providers, AuthNavigation } from '@/components/common';
 
 export default function RootLayout({
   children,
@@ -29,7 +29,7 @@ export default function RootLayout({
                     </h1>
                   </Link>
                 </div>
-                <nav className="flex space-x-4">
+                <nav className="flex items-center space-x-4">
                   <Link
                     href="/"
                     className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
@@ -42,18 +42,9 @@ export default function RootLayout({
                   >
                     진단 테스트
                   </Link>
-                  <Link
-                    href="/login"
-                    className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    로그인
-                  </Link>
-                  <Link
-                    href="/signup"
-                    className="text-white bg-gray-900 shover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    회원가입
-                  </Link>
+
+                  {/* 인증 상태에 따른 네비게이션 */}
+                  <AuthNavigation />
                 </nav>
               </div>
             </div>

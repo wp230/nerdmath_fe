@@ -12,6 +12,7 @@ export interface ModalProps {
   showCloseButton?: boolean;
   closeOnBackdropClick?: boolean;
   closeOnEscapeKey?: boolean;
+  backdropOpacity?: 'none' | 'light' | 'medium' | 'dark';
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -23,6 +24,7 @@ const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
   closeOnBackdropClick = true,
   closeOnEscapeKey = true,
+  backdropOpacity = 'dark',
 }) => {
   // ESC 키로 모달 닫기
   useEffect(() => {
@@ -61,6 +63,13 @@ const Modal: React.FC<ModalProps> = ({
     full: 'max-w-full mx-4',
   };
 
+  const backdropClasses = {
+    none: 'bg-transparent',
+    light: 'bg-black bg-opacity-20',
+    medium: 'bg-black bg-opacity-40',
+    dark: 'bg-black bg-opacity-50',
+  };
+
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (closeOnBackdropClick && event.target === event.currentTarget) {
       onClose();
@@ -69,7 +78,7 @@ const Modal: React.FC<ModalProps> = ({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${backdropClasses[backdropOpacity]}`}
       onClick={handleBackdropClick}
       role="dialog"
       aria-modal="true"

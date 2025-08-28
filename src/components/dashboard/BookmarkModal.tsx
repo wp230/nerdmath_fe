@@ -23,18 +23,20 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
 
   const handleSelectAll = () => {
     if (!bookmarks?.bookmarks) return;
-    
+
     if (selectedBookmarks.length === bookmarks.bookmarks.length) {
       setSelectedBookmarks([]);
     } else {
-      setSelectedBookmarks(bookmarks.bookmarks.map(bookmark => bookmark.bookmarkId));
+      setSelectedBookmarks(
+        bookmarks.bookmarks.map((bookmark) => bookmark.bookmarkId)
+      );
     }
   };
 
   const handleSelectBookmark = (bookmarkId: string) => {
-    setSelectedBookmarks(prev => {
+    setSelectedBookmarks((prev) => {
       if (prev.includes(bookmarkId)) {
-        return prev.filter(id => id !== bookmarkId);
+        return prev.filter((id) => id !== bookmarkId);
       } else {
         return [...prev, bookmarkId];
       }
@@ -47,10 +49,36 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
       return;
     }
 
+    const selectedBookmarkObjects =
+      bookmarks?.bookmarks.filter((bm) =>
+        selectedBookmarks.includes(bm.bookmarkId)
+      ) || [];
+
+    const uniqueUnitIds = new Set(
+      selectedBookmarkObjects.map((bm) => bm.unitId)
+    );
+
+    if (uniqueUnitIds.size > 1) {
+      alert(
+        '여러 단원의 북마크를 동시에 복습할 수 없습니다. 하나의 단원에 속한 북마크만 선택해주세요.'
+      );
+      return;
+    }
+
+    const unitId =
+      uniqueUnitIds.size === 1
+        ? uniqueUnitIds.values().next().value
+        : undefined;
+
+    if (!unitId) {
+      alert('복습을 시작할 단원을 식별할 수 없습니다.');
+      return;
+    }
+
     try {
       await startReviewMutation.mutateAsync({
         mode: 'set',
-        // 실제 API에서는 선택된 북마크 ID들을 전달해야 할 수도 있음
+        unitId: unitId,
       });
       onClose();
       setSelectedBookmarks([]);
@@ -77,7 +105,9 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
         ) : error ? (
           <div className="text-center text-red-600 py-8">
             <p>북마크를 불러올 수 없습니다.</p>
-            <p className="text-sm text-gray-500 mt-2">잠시 후 다시 시도해주세요.</p>
+            <p className="text-sm text-gray-500 mt-2">
+              잠시 후 다시 시도해주세요.
+            </p>
           </div>
         ) : !bookmarks?.bookmarks || bookmarks.bookmarks.length === 0 ? (
           <div className="text-center py-8">
@@ -94,7 +124,9 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
                 d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
               />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">저장된 북마크가 없습니다</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              저장된 북마크가 없습니다
+            </h3>
             <p className="text-gray-500">
               학습 중 어려운 문제를 북마크로 저장하여 나중에 다시 풀어보세요.
             </p>
@@ -105,18 +137,14 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
             <div className="flex items-center justify-between mb-6">
               <div>
                 <p className="text-gray-600">
-                  총 {bookmarks.totalCount}개의 북마크 중 {bookmarks.bookmarks.length}개 표시
+                  총 {bookmarks.totalCount}개의 북마크 중{' '}
+                  {bookmarks.bookmarks.length}개 표시
                 </p>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSelectAll}
-              >
-                {selectedBookmarks.length === bookmarks.bookmarks.length 
-                  ? '전체 해제' 
-                  : '전체 선택'
-                }
+              <Button variant="outline" size="sm" onClick={handleSelectAll}>
+                {selectedBookmarks.length === bookmarks.bookmarks.length
+                  ? '전체 해제'
+                  : '전체 선택'}
               </Button>
             </div>
 
@@ -127,9 +155,10 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
                   key={bookmark.bookmarkId}
                   className={`
                     border rounded-lg p-4 cursor-pointer transition-all
-                    ${selectedBookmarks.includes(bookmark.bookmarkId)
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                    ${
+                      selectedBookmarks.includes(bookmark.bookmarkId)
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
                     }
                   `}
                   onClick={() => handleSelectBookmark(bookmark.bookmarkId)}
@@ -140,9 +169,10 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
                       <div
                         className={`
                           w-5 h-5 rounded border-2 flex items-center justify-center
-                          ${selectedBookmarks.includes(bookmark.bookmarkId)
-                            ? 'bg-blue-600 border-blue-600'
-                            : 'border-gray-300'
+                          ${
+                            selectedBookmarks.includes(bookmark.bookmarkId)
+                              ? 'bg-blue-600 border-blue-600'
+                              : 'border-gray-300'
                           }
                         `}
                       >
@@ -215,10 +245,9 @@ const BookmarkModal: React.FC<BookmarkModalProps> = ({
                   disabled={selectedBookmarks.length === 0}
                   isLoading={startReviewMutation.isPending}
                 >
-                  {startReviewMutation.isPending 
-                    ? '시작 중...' 
-                    : `복습 시작 (${selectedBookmarks.length}개)`
-                  }
+                  {startReviewMutation.isPending
+                    ? '시작 중...'
+                    : `복습 시작 (${selectedBookmarks.length}개)`}
                 </Button>
               </div>
             </div>

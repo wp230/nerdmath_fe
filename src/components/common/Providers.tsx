@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useHydrateAuth } from '@/stores/auth.store';
 
 // React Query 클라이언트 생성
 const createQueryClient = () => {
@@ -43,6 +44,20 @@ const createQueryClient = () => {
   });
 };
 
+// 인증 상태 초기화 컴포넌트
+const AuthInitializer: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const hydrateAuth = useHydrateAuth();
+
+  useEffect(() => {
+    // 앱 시작 시 인증 상태 복원
+    hydrateAuth();
+  }, [hydrateAuth]);
+
+  return <>{children}</>;
+};
+
 interface ProvidersProps {
   children: React.ReactNode;
 }
@@ -53,10 +68,10 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <AuthInitializer>{children}</AuthInitializer>
       {/* 개발 환경에서만 React Query DevTools 표시 */}
       {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        <ReactQueryDevtools initialIsOpen={false} />
       )}
     </QueryClientProvider>
   );

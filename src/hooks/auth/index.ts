@@ -6,13 +6,8 @@ export {
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,
-  useSendVerificationCodeMutation,
-  useVerifyCodeMutation,
-  useResetPasswordMutation,
-  useChangePasswordMutation,
-  useUpdateProfileMutation,
-  useCheckUsernameMutation,
-  useCheckEmailMutation,
+  useSendVerificationMutation,
+  useCheckVerificationMutation,
 } from './useAuthMutations';
 
 // Queries

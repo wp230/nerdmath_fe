@@ -6,37 +6,61 @@ import { authQueryKeys } from './queryKeys';
 import type {
   LoginRequest,
   RegisterRequest,
-  SendVerificationCodeRequest,
-  VerifyCodeRequest,
-  ResetPasswordRequest,
-  UpdateProfileRequest,
-  ChangePasswordRequest,
-  CheckUsernameRequest,
-  CheckEmailRequest,
-} from '@/types/auth';
+  SendVerificationRequest,
+  CheckVerificationRequest,
+} from '@/types/auth/index';
 
 // ============================================================================
 // 로그인 훅
 // ============================================================================
 
 export const useLoginMutation = () => {
-  const router = useRouter();
   const { login: loginStore, setLoading } = useAuthStore();
 
   return useMutation({
-    mutationFn: (data: LoginRequest) => authApi.login(data),
+    mutationFn: async (data: LoginRequest) => {
+      console.log('=== 로그인 요청 시작 ===');
+      console.log('요청 데이터:', data);
+
+      try {
+        const result = await authApi.login(data);
+        console.log('=== 로그인 API 응답 성공 ===');
+        console.log('전체 응답:', result);
+        console.log('응답 타입:', typeof result);
+        console.log('응답 키들:', Object.keys(result));
+
+        if (result.user) {
+          console.log('사용자 정보:', result.user);
+          console.log('이메일 인증 상태:', result.user.emailVerified);
+          console.log(
+            '이메일 인증 상태 타입:',
+            typeof result.user.emailVerified
+          );
+        }
+
+        return result;
+      } catch (error) {
+        console.log('=== 로그인 API 에러 ===');
+        console.log('에러 전체:', error);
+        throw error;
+      }
+    },
     onMutate: () => {
+      console.log('=== 로그인 뮤테이션 시작 ===');
       setLoading(true);
     },
     onSuccess: (response) => {
+      console.log('=== 로그인 뮤테이션 성공 ===');
+      console.log('최종 응답:', response);
+
       loginStore(
         {
           accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
+          refreshToken: '', // API에서 refreshToken 미제공
         },
         response.user
       );
-      router.push('/dashboard');
+      // 리다이렉트는 컴포넌트에서 처리하도록 변경
     },
     onError: (error) => {
       console.error('Login failed:', error);
@@ -86,7 +110,7 @@ export const useLogoutMutation = () => {
 
 export const useRegisterMutation = () => {
   const router = useRouter();
-  const { login: loginStore, setLoading } = useAuthStore();
+  const { setLoading } = useAuthStore();
 
   return useMutation({
     mutationFn: (data: RegisterRequest) => authApi.register(data),
@@ -94,14 +118,9 @@ export const useRegisterMutation = () => {
       setLoading(true);
     },
     onSuccess: (response) => {
-      loginStore(
-        {
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-        },
-        response.user
-      );
-      router.push('/dashboard');
+      // 회원가입 완료 후 로그인 페이지로 이동
+      console.log('회원가입 완료:', response.message);
+      router.push('/login');
     },
     onError: (error) => {
       console.error('Registration failed:', error);
@@ -117,10 +136,10 @@ export const useRegisterMutation = () => {
 // 인증 코드 전송 훅
 // ============================================================================
 
-export const useSendVerificationCodeMutation = () => {
+export const useSendVerificationMutation = () => {
   return useMutation({
-    mutationFn: (data: SendVerificationCodeRequest) =>
-      authApi.sendVerificationCode(data),
+    mutationFn: (data: SendVerificationRequest) =>
+      authApi.sendVerification(data),
     onError: (error) => {
       console.error('Send verification code failed:', error);
     },
@@ -131,91 +150,12 @@ export const useSendVerificationCodeMutation = () => {
 // 인증 코드 검증 훅
 // ============================================================================
 
-export const useVerifyCodeMutation = () => {
+export const useCheckVerificationMutation = () => {
   return useMutation({
-    mutationFn: (data: VerifyCodeRequest) => authApi.verifyCode(data),
+    mutationFn: (data: CheckVerificationRequest) =>
+      authApi.checkVerification(data),
     onError: (error) => {
-      console.error('Verify code failed:', error);
-    },
-  });
-};
-
-// ============================================================================
-// 비밀번호 재설정 훅
-// ============================================================================
-
-export const useResetPasswordMutation = () => {
-  const router = useRouter();
-
-  return useMutation({
-    mutationFn: (data: ResetPasswordRequest) => authApi.resetPassword(data),
-    onSuccess: () => {
-      router.push('/login');
-    },
-    onError: (error) => {
-      console.error('Reset password failed:', error);
-    },
-  });
-};
-
-// ============================================================================
-// 비밀번호 변경 훅
-// ============================================================================
-
-export const useChangePasswordMutation = () => {
-  return useMutation({
-    mutationFn: (data: ChangePasswordRequest) => authApi.changePassword(data),
-    onError: (error) => {
-      console.error('Change password failed:', error);
-    },
-  });
-};
-
-// ============================================================================
-// 프로필 업데이트 훅
-// ============================================================================
-
-export const useUpdateProfileMutation = () => {
-  const queryClient = useQueryClient();
-  const { setUser } = useAuthStore();
-
-  return useMutation({
-    mutationFn: (data: UpdateProfileRequest) => authApi.updateProfile(data),
-    onSuccess: (response) => {
-      setUser(response.user);
-      // 현재 사용자 쿼리 캐시 무효화
-      queryClient.invalidateQueries({
-        queryKey: authQueryKeys.currentUser(),
-      });
-    },
-    onError: (error) => {
-      console.error('Update profile failed:', error);
-    },
-  });
-};
-
-// ============================================================================
-// 사용자명 중복 확인 훅
-// ============================================================================
-
-export const useCheckUsernameMutation = () => {
-  return useMutation({
-    mutationFn: (data: CheckUsernameRequest) => authApi.checkUsername(data),
-    onError: (error) => {
-      console.error('Check username failed:', error);
-    },
-  });
-};
-
-// ============================================================================
-// 이메일 중복 확인 훅
-// ============================================================================
-
-export const useCheckEmailMutation = () => {
-  return useMutation({
-    mutationFn: (data: CheckEmailRequest) => authApi.checkEmail(data),
-    onError: (error) => {
-      console.error('Check email failed:', error);
+      console.error('Check verification failed:', error);
     },
   });
 };

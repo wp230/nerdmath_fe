@@ -84,10 +84,10 @@ const TodayStats: React.FC<TodayStatsProps> = ({
       <div className="grid grid-cols-2 gap-4">
         {/* 오늘 푼 문제 수 */}
         <div className="bg-blue-50 rounded-lg p-4">
-          <div className="flex items-center space-x-3">
-            <div className="bg-blue-100 rounded-full p-2">
+          <div className="flex flex-col items-center text-center space-y-2">
+            <div className="bg-blue-100 rounded-full p-3">
               <svg
-                className="w-6 h-6 text-blue-600"
+                className="w-8 h-8 text-blue-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -100,21 +100,19 @@ const TodayStats: React.FC<TodayStatsProps> = ({
                 />
               </svg>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-blue-600">
-                {activityStats.todaySolved}
-              </p>
-              <p className="text-sm text-gray-600">문제 해결</p>
-            </div>
+            <p className="text-3xl font-bold text-blue-600">
+              {activityStats.todaySolved}
+            </p>
+            <p className="text-sm text-gray-600 font-medium">문제 해결</p>
           </div>
         </div>
 
         {/* 오늘 학습 시간 */}
         <div className="bg-green-50 rounded-lg p-4">
-          <div className="flex items-center space-x-3">
-            <div className="bg-green-100 rounded-full p-2">
+          <div className="flex flex-col items-center text-center space-y-2">
+            <div className="bg-green-100 rounded-full p-3">
               <svg
-                className="w-6 h-6 text-green-600"
+                className="w-8 h-8 text-green-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -127,21 +125,19 @@ const TodayStats: React.FC<TodayStatsProps> = ({
                 />
               </svg>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-green-600">
-                {formatTime(activityStats.studyDurationMin)}
-              </p>
-              <p className="text-sm text-gray-600">학습 시간</p>
-            </div>
+            <p className="text-3xl font-bold text-green-600">
+              {formatTime(activityStats.studyDurationMin)}
+            </p>
+            <p className="text-sm text-gray-600 font-medium">학습 시간</p>
           </div>
         </div>
 
         {/* 누적 문제 수 */}
         <div className="bg-purple-50 rounded-lg p-4">
-          <div className="flex items-center space-x-3">
-            <div className="bg-purple-100 rounded-full p-2">
+          <div className="flex flex-col items-center text-center space-y-2">
+            <div className="bg-purple-100 rounded-full p-3">
               <svg
-                className="w-6 h-6 text-purple-600"
+                className="w-8 h-8 text-purple-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -154,21 +150,19 @@ const TodayStats: React.FC<TodayStatsProps> = ({
                 />
               </svg>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-purple-600">
-                {activityStats.totalProblems.toLocaleString()}
-              </p>
-              <p className="text-sm text-gray-600">총 문제 수</p>
-            </div>
+            <p className="text-3xl font-bold text-purple-600">
+              {activityStats.totalProblems.toLocaleString()}
+            </p>
+            <p className="text-sm text-gray-600 font-medium">총 문제 수</p>
           </div>
         </div>
 
         {/* 출석 일수 */}
         <div className="bg-orange-50 rounded-lg p-4">
-          <div className="flex items-center space-x-3">
-            <div className="bg-orange-100 rounded-full p-2">
+          <div className="flex flex-col items-center text-center space-y-2">
+            <div className="bg-orange-100 rounded-full p-3">
               <svg
-                className="w-6 h-6 text-orange-600"
+                className="w-8 h-8 text-orange-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -181,12 +175,10 @@ const TodayStats: React.FC<TodayStatsProps> = ({
                 />
               </svg>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-orange-600">
-                {activityStats.attendanceCount}
-              </p>
-              <p className="text-sm text-gray-600">연속 출석</p>
-            </div>
+            <p className="text-3xl font-bold text-orange-600">
+              {activityStats.attendanceCount}
+            </p>
+            <p className="text-sm text-gray-600 font-medium">연속 출석</p>
           </div>
         </div>
       </div>

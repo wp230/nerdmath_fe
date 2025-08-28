@@ -30,8 +30,9 @@ export const dashboardQueryKeys = {
   bookmarks: (params?: DashboardQueryParams) =>
     [...dashboardQueryKeys.all, 'bookmarks', params] as const,
 
-  // Active learning
-  activeLearning: () => [...dashboardQueryKeys.all, 'activeLearning'] as const,
+  // Diagnostic analysis
+  diagnosticAnalysis: (userId: number) =>
+    [...dashboardQueryKeys.all, 'diagnosticAnalysis', userId] as const,
 
   // Combined dashboard data
   dashboardData: (params?: DashboardQueryParams) =>

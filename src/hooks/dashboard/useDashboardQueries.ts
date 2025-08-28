@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import * as dashboardApi from '@/services/dashboard';
 import { dashboardQueryKeys } from './queryKeys';
 import type { DashboardQueryParams } from '@/types/dashboard';
+import { useAuthStore } from '@/stores/auth.store';
 
 // ============================================================================
 // 개별 쿼리 훅들
@@ -18,50 +19,68 @@ export const useProfileQuery = () => {
 };
 
 export const useMyCharacterQuery = (params?: DashboardQueryParams) => {
+  const userId = useAuthStore((state) => state.user?.userId);
+  const userParams = userId ? { ...params, userId } : params;
+
   return useQuery({
-    queryKey: dashboardQueryKeys.character(params),
-    queryFn: () => dashboardApi.getMyCharacter(params),
+    queryKey: dashboardQueryKeys.character(userParams),
+    queryFn: () => dashboardApi.getMyCharacter(userParams),
+    enabled: !!userId,
     staleTime: 5 * 60 * 1000, // 5분
     gcTime: 10 * 60 * 1000, // 10분
   });
 };
 
 export const useOverallProgressQuery = (params?: DashboardQueryParams) => {
+  const userId = useAuthStore((state) => state.user?.userId);
+  const userParams = userId ? { ...params, userId } : params;
+
   return useQuery({
-    queryKey: dashboardQueryKeys.overallProgress(params),
-    queryFn: () => dashboardApi.getOverallProgress(params),
+    queryKey: dashboardQueryKeys.overallProgress(userParams),
+    queryFn: () => dashboardApi.getOverallProgress(userParams),
+    enabled: !!userId,
     staleTime: 5 * 60 * 1000, // 5분
     gcTime: 10 * 60 * 1000, // 10분
   });
 };
 
 export const useActivityStatsQuery = (params?: DashboardQueryParams) => {
+  const userId = useAuthStore((state) => state.user?.userId);
+  const userParams = userId ? { ...params, userId } : params;
+
   return useQuery({
-    queryKey: dashboardQueryKeys.activityStats(params),
-    queryFn: () => dashboardApi.getActivityStats(params),
+    queryKey: dashboardQueryKeys.activityStats(userParams),
+    queryFn: () => dashboardApi.getActivityStats(userParams),
+    enabled: !!userId,
     staleTime: 2 * 60 * 1000, // 2분 (자주 업데이트되는 데이터)
     gcTime: 5 * 60 * 1000, // 5분
   });
 };
 
 export const useProgressByTypeQueries = (params?: DashboardQueryParams) => {
+  const userId = useAuthStore((state) => state.user?.userId);
+  const userParams = userId ? { ...params, userId } : params;
+
   return useQueries({
     queries: [
       {
-        queryKey: dashboardQueryKeys.conceptProgress(params),
-        queryFn: () => dashboardApi.getConceptProgress(params),
+        queryKey: dashboardQueryKeys.conceptProgress(userParams),
+        queryFn: () => dashboardApi.getConceptProgress(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.problemProgress(params),
-        queryFn: () => dashboardApi.getProblemProgress(params),
+        queryKey: dashboardQueryKeys.problemProgress(userParams),
+        queryFn: () => dashboardApi.getProblemProgress(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.vocabProgress(params),
-        queryFn: () => dashboardApi.getVocabProgress(params),
+        queryKey: dashboardQueryKeys.vocabProgress(userParams),
+        queryFn: () => dashboardApi.getVocabProgress(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
@@ -70,20 +89,26 @@ export const useProgressByTypeQueries = (params?: DashboardQueryParams) => {
 };
 
 export const useBookmarksQuery = (params?: DashboardQueryParams) => {
+  const userId = useAuthStore((state) => state.user?.userId);
+  const userParams = userId ? { ...params, userId } : params;
+
   return useQuery({
-    queryKey: dashboardQueryKeys.bookmarks(params),
-    queryFn: () => dashboardApi.getBookmarks(params),
+    queryKey: dashboardQueryKeys.bookmarks(userParams),
+    queryFn: () => dashboardApi.getBookmarks(userParams),
+    enabled: !!userId,
     staleTime: 5 * 60 * 1000, // 5분
     gcTime: 10 * 60 * 1000, // 10분
   });
 };
 
-export const useActiveLearningQuery = () => {
+export const useDiagnosticAnalysisQuery = () => {
+  const { user } = useAuthStore();
   return useQuery({
-    queryKey: dashboardQueryKeys.activeLearning(),
-    queryFn: dashboardApi.getActiveLearning,
-    staleTime: 1 * 60 * 1000, // 1분 (학습 상태는 자주 확인)
-    gcTime: 2 * 60 * 1000, // 2분
+    queryKey: dashboardQueryKeys.diagnosticAnalysis(user!.userId),
+    queryFn: () => dashboardApi.getDiagnosticAnalysis(user!.userId),
+    enabled: !!user?.userId, // userId가 있을 때만 쿼리 실행
+    staleTime: 30 * 60 * 1000, // 30분
+    gcTime: 60 * 60 * 1000, // 1시간
   });
 };
 
@@ -92,62 +117,80 @@ export const useActiveLearningQuery = () => {
 // ============================================================================
 
 export const useDashboardQueries = (params?: DashboardQueryParams) => {
+  const userId = useAuthStore((state) => state.user?.userId);
+
+  // 사용자별 파라미터 생성 (userId 포함)
+  const userParams = userId ? { ...params, userId } : params;
+
   // 모든 대시보드 관련 쿼리를 병렬로 실행
   const queries = useQueries({
     queries: [
       {
         queryKey: dashboardQueryKeys.profile(),
         queryFn: dashboardApi.getProfile,
+        enabled: !!userId, // 로그인된 사용자만
         staleTime: 10 * 60 * 1000,
         gcTime: 15 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.character(params),
-        queryFn: () => dashboardApi.getMyCharacter(params),
+        queryKey: dashboardQueryKeys.character(userParams),
+        queryFn: () => dashboardApi.getMyCharacter(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.overallProgress(params),
-        queryFn: () => dashboardApi.getOverallProgress(params),
+        queryKey: dashboardQueryKeys.overallProgress(userParams),
+        queryFn: () => dashboardApi.getOverallProgress(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.activityStats(params),
-        queryFn: () => dashboardApi.getActivityStats(params),
+        queryKey: dashboardQueryKeys.activityStats(userParams),
+        queryFn: () => dashboardApi.getActivityStats(userParams),
+        enabled: !!userId,
         staleTime: 2 * 60 * 1000,
         gcTime: 5 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.conceptProgress(params),
-        queryFn: () => dashboardApi.getConceptProgress(params),
+        queryKey: dashboardQueryKeys.conceptProgress(userParams),
+        queryFn: () => dashboardApi.getConceptProgress(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.problemProgress(params),
-        queryFn: () => dashboardApi.getProblemProgress(params),
+        queryKey: dashboardQueryKeys.problemProgress(userParams),
+        queryFn: () => dashboardApi.getProblemProgress(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.vocabProgress(params),
-        queryFn: () => dashboardApi.getVocabProgress(params),
+        queryKey: dashboardQueryKeys.vocabProgress(userParams),
+        queryFn: () => dashboardApi.getVocabProgress(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
       {
-        queryKey: dashboardQueryKeys.bookmarks(params),
-        queryFn: () => dashboardApi.getBookmarks(params),
+        queryKey: dashboardQueryKeys.bookmarks(userParams),
+        queryFn: () => dashboardApi.getBookmarks(userParams),
+        enabled: !!userId,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
       },
+
       {
-        queryKey: dashboardQueryKeys.activeLearning(),
-        queryFn: dashboardApi.getActiveLearning,
-        staleTime: 1 * 60 * 1000,
-        gcTime: 2 * 60 * 1000,
+        queryKey: dashboardQueryKeys.diagnosticAnalysis(userId!),
+        queryFn: () => dashboardApi.getDiagnosticAnalysis(userId!),
+        enabled: !!userId,
+        staleTime: 30 * 60 * 1000,
+        gcTime: 60 * 60 * 1000,
+        // 에러 발생 시 무시하고 계속 진행
+        retry: false,
+        throwOnError: false,
       },
     ],
   });
@@ -163,7 +206,7 @@ export const useDashboardQueries = (params?: DashboardQueryParams) => {
       problemProgressQuery,
       vocabProgressQuery,
       bookmarksQuery,
-      activeLearningQuery,
+      diagnosticAnalysisQuery,
     ] = queries;
 
     // 모든 쿼리의 로딩 상태 통합
@@ -188,7 +231,7 @@ export const useDashboardQueries = (params?: DashboardQueryParams) => {
         vocab: vocabProgressQuery.data,
       },
       bookmarks: bookmarksQuery.data,
-      activeLearning: activeLearningQuery.data,
+      diagnosticAnalysis: diagnosticAnalysisQuery?.data,
     };
 
     // 개별 쿼리 상태도 함께 반환
@@ -243,11 +286,11 @@ export const useDashboardQueries = (params?: DashboardQueryParams) => {
         error: bookmarksQuery.error,
         isFetching: bookmarksQuery.isFetching,
       },
-      activeLearning: {
-        isLoading: activeLearningQuery.isLoading,
-        isError: activeLearningQuery.isError,
-        error: activeLearningQuery.error,
-        isFetching: activeLearningQuery.isFetching,
+      diagnosticAnalysis: {
+        isLoading: diagnosticAnalysisQuery.isLoading,
+        isError: diagnosticAnalysisQuery.isError,
+        error: diagnosticAnalysisQuery.error,
+        isFetching: diagnosticAnalysisQuery.isFetching,
       },
     };
 
